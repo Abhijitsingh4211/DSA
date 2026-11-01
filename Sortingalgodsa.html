@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SORTING ALGORITHMS PROGRAM</title>
+</head>
+<body>
+<br>
+<b>QUESTION 1:-</b><br>
+<p>Enter an integer array from the user and perform Selection Sort through iteration. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;int&gt; a(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+
+    for(int i = 0; i &lt; n - 1; i++) {
+        int minIndex = i;
+        for(int j = i + 1; j &lt; n; j++)
+            if(a[j] &lt; a[minIndex]) minIndex = j;
+        swap(a[i], a[minIndex]);
+    }
+
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(int x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n^2)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n^2)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: 5 2 4 1 3
+Sorted array: 1 2 3 4 5
+Best: O(n²); Worst: O(n²).</pre>
+<hr>
+<br>
+<b>QUESTION 2:-</b><br>
+<p>Enter an integer array from the user and perform Selection Sort through recursion. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+void selectionSort(vector&lt;int&gt;&amp; a, int start) {
+    if(start &gt;= (int)a.size() - 1) return;
+    int minIndex = start;
+    for(int j = start + 1; j &lt; (int)a.size(); j++)
+        if(a[j] &lt; a[minIndex]) minIndex = j;
+    swap(a[start], a[minIndex]);
+    selectionSort(a, start + 1);
+}
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;int&gt; a(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+
+    selectionSort(a, 0);
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(int x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n^2)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n^2)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: 5 2 4 1 3
+Sorted array: 1 2 3 4 5
+Best: O(n²); Worst: O(n²).</pre>
+<hr>
+<br>
+<b>QUESTION 3:-</b><br>
+<p>Enter an integer array from the user and perform Bubble Sort through iteration. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;int&gt; a(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+
+    for(int i = 0; i &lt; n - 1; i++) {
+        bool swapped = false;
+        for(int j = 0; j &lt; n - i - 1; j++) {
+            if(a[j] &gt; a[j + 1]) {
+                swap(a[j], a[j + 1]);
+                swapped = true;
+            }
+        }
+        if(!swapped) break;
+    }
+
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(int x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n^2)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: 5 2 4 1 3
+Sorted array: 1 2 3 4 5
+Best: O(n); Worst: O(n²).</pre>
+<hr>
+<br>
+<b>QUESTION 4:-</b><br>
+<p>Enter an integer array from the user and perform Bubble Sort through recursion. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+void bubbleSort(vector&lt;int&gt;&amp; a, int n) {
+    if(n &lt;= 1) return;
+    bool swapped = false;
+    for(int i = 0; i &lt; n - 1; i++) {
+        if(a[i] &gt; a[i + 1]) {
+            swap(a[i], a[i + 1]);
+            swapped = true;
+        }
+    }
+    if(!swapped) return;
+    bubbleSort(a, n - 1);
+}
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;int&gt; a(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+
+    bubbleSort(a, n);
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(int x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n^2)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: 5 2 4 1 3
+Sorted array: 1 2 3 4 5
+Best: O(n); Worst: O(n²).</pre>
+<hr>
+<br>
+<b>QUESTION 5:-</b><br>
+<p>Enter an integer array from the user and perform Insertion Sort through iteration. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;int&gt; a(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+
+    for(int i = 1; i &lt; n; i++) {
+        int key = a[i], j = i - 1;
+        while(j &gt;= 0 &amp;&amp; a[j] &gt; key) {
+            a[j + 1] = a[j];
+            j--;
+        }
+        a[j + 1] = key;
+    }
+
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(int x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n^2)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: 5 2 4 1 3
+Sorted array: 1 2 3 4 5
+Best: O(n); Worst: O(n²).</pre>
+<hr>
+<br>
+<b>QUESTION 6:-</b><br>
+<p>Enter an integer array from the user and perform Insertion Sort through recursion. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+void insertionSort(vector&lt;int&gt;&amp; a, int n) {
+    if(n &lt;= 1) return;
+    insertionSort(a, n - 1);
+    int key = a[n - 1], j = n - 2;
+    while(j &gt;= 0 &amp;&amp; a[j] &gt; key) {
+        a[j + 1] = a[j];
+        j--;
+    }
+    a[j + 1] = key;
+}
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;int&gt; a(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+
+    insertionSort(a, n);
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(int x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n^2)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: 5 2 4 1 3
+Sorted array: 1 2 3 4 5
+Best: O(n); Worst: O(n²).</pre>
+<hr>
+<br>
+<b>QUESTION 7:-</b><br>
+<p>Enter an integer array from the user and perform Merge Sort through iteration. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;int&gt; a(n), temp(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+
+    for(int width = 1; width &lt; n; width *= 2) {
+        for(int left = 0; left &lt; n; left += 2 * width) {
+            int mid = min(left + width, n);
+            int right = min(left + 2 * width, n);
+            int i = left, j = mid, k = left;
+            while(i &lt; mid &amp;&amp; j &lt; right)
+                temp[k++] = (a[i] &lt;= a[j]) ? a[i++] : a[j++];
+            while(i &lt; mid) temp[k++] = a[i++];
+            while(j &lt; right) temp[k++] = a[j++];
+            for(int p = left; p &lt; right; p++) a[p] = temp[p];
+        }
+    }
+
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(const auto&amp; x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n log n)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n log n)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: 5 2 4 1 3
+Sorted array: 1 2 3 4 5
+Best: O(n log n); Worst: O(n log n).</pre>
+<hr>
+<br>
+<b>QUESTION 8:-</b><br>
+<p>Enter an integer array from the user and perform Merge Sort through recursion. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+void merge(vector&lt;int&gt;&amp; a, vector&lt;int&gt;&amp; temp, int left, int mid, int right) {
+    int i = left, j = mid + 1, k = left;
+    while(i &lt;= mid &amp;&amp; j &lt;= right)
+        temp[k++] = (a[i] &lt;= a[j]) ? a[i++] : a[j++];
+    while(i &lt;= mid) temp[k++] = a[i++];
+    while(j &lt;= right) temp[k++] = a[j++];
+    for(int p = left; p &lt;= right; p++) a[p] = temp[p];
+}
+
+void mergeSort(vector&lt;int&gt;&amp; a, vector&lt;int&gt;&amp; temp, int left, int right) {
+    if(left &gt;= right) return;
+    int mid = left + (right - left) / 2;
+    mergeSort(a, temp, left, mid);
+    mergeSort(a, temp, mid + 1, right);
+    merge(a, temp, left, mid, right);
+}
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;int&gt; a(n), temp(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+
+    mergeSort(a, temp, 0, n - 1);
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(const auto&amp; x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n log n)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n log n)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: 5 2 4 1 3
+Sorted array: 1 2 3 4 5
+Best: O(n log n); Worst: O(n log n).</pre>
+<hr>
+<br>
+<b>QUESTION 9:-</b><br>
+<p>Enter an integer array from the user and perform Quick Sort through iteration. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int partitionArray(vector&lt;int&gt;&amp; a, int low, int high) {
+    int pivot = a[high];
+    int i = low - 1;
+    for(int j = low; j &lt; high; j++) {
+        if(a[j] &lt;= pivot) {
+            i++;
+            swap(a[i], a[j]);
+        }
+    }
+    swap(a[i + 1], a[high]);
+    return i + 1;
+}
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;int&gt; a(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+
+    vector&lt;pair&lt;int, int&gt;&gt; st;
+    if(n &gt; 1) st.push_back({0, n - 1});
+    while(!st.empty()) {
+        int low = st.back().first, high = st.back().second;
+        st.pop_back();
+        if(low &lt; high) {
+            int p = partitionArray(a, low, high);
+            if(p - 1 &gt; low) st.push_back({low, p - 1});
+            if(p + 1 &lt; high) st.push_back({p + 1, high});
+        }
+    }
+
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(const auto&amp; x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n log n)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n^2)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: 5 2 4 1 3
+Sorted array: 1 2 3 4 5
+Best: O(n log n); Worst: O(n²).</pre>
+<hr>
+<br>
+<b>QUESTION 10:-</b><br>
+<p>Enter an integer array from the user and perform Quick Sort through recursion. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int partitionArray(vector&lt;int&gt;&amp; a, int low, int high) {
+    int pivot = a[high];
+    int i = low - 1;
+    for(int j = low; j &lt; high; j++) {
+        if(a[j] &lt;= pivot) {
+            i++;
+            swap(a[i], a[j]);
+        }
+    }
+    swap(a[i + 1], a[high]);
+    return i + 1;
+}
+
+void quickSort(vector&lt;int&gt;&amp; a, int low, int high) {
+    if(low &lt; high) {
+        int p = partitionArray(a, low, high);
+        quickSort(a, low, p - 1);
+        quickSort(a, p + 1, high);
+    }
+}
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;int&gt; a(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+
+    quickSort(a, 0, n - 1);
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(const auto&amp; x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n log n)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n^2)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: 5 2 4 1 3
+Sorted array: 1 2 3 4 5
+Best: O(n log n); Worst: O(n²).</pre>
+<hr>
+<br>
+<b>QUESTION 11:-</b><br>
+<p>Enter a string array from the user and perform Selection Sort through iteration. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;string&gt; a(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+    for(int i = 0; i &lt; n - 1; i++) {
+        int minIndex = i;
+        for(int j = i + 1; j &lt; n; j++)
+            if(a[j] &lt; a[minIndex]) minIndex = j;
+        swap(a[i], a[minIndex]);
+    }
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(const auto&amp; x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n^2)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n^2)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: mango apple orange banana grape
+Sorted array: apple banana grape mango orange
+Best: O(n²); Worst: O(n²).</pre>
+<hr>
+<br>
+<b>QUESTION 12:-</b><br>
+<p>Enter a string array from the user and perform Selection Sort through recursion. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+void sortArray(vector&lt;string&gt;&amp; a, int start) {
+    if(start &gt;= (int)a.size() - 1) return;
+    int minIndex = start;
+    for(int j = start + 1; j &lt; (int)a.size(); j++)
+        if(a[j] &lt; a[minIndex]) minIndex = j;
+    swap(a[start], a[minIndex]);
+    sortArray(a, start + 1);
+}
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;string&gt; a(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+    sortArray(a, 0);
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(const auto&amp; x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n^2)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n^2)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: mango apple orange banana grape
+Sorted array: apple banana grape mango orange
+Best: O(n²); Worst: O(n²).</pre>
+<hr>
+<br>
+<b>QUESTION 13:-</b><br>
+<p>Enter a string array from the user and perform Bubble Sort through iteration. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;string&gt; a(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+    for(int i = 0; i &lt; n - 1; i++) {
+        bool swapped = false;
+        for(int j = 0; j &lt; n - i - 1; j++) {
+            if(a[j] &gt; a[j + 1]) {
+                swap(a[j], a[j + 1]);
+                swapped = true;
+            }
+        }
+        if(!swapped) break;
+    }
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(const auto&amp; x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n^2)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: mango apple orange banana grape
+Sorted array: apple banana grape mango orange
+Best: O(n); Worst: O(n²).</pre>
+<hr>
+<br>
+<b>QUESTION 14:-</b><br>
+<p>Enter a string array from the user and perform Bubble Sort through recursion. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+void sortArray(vector&lt;string&gt;&amp; a, int n) {
+    if(n &lt;= 1) return;
+    bool swapped = false;
+    for(int i = 0; i &lt; n - 1; i++) {
+        if(a[i] &gt; a[i + 1]) {
+            swap(a[i], a[i + 1]);
+            swapped = true;
+        }
+    }
+    if(!swapped) return;
+    sortArray(a, n - 1);
+}
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;string&gt; a(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+    sortArray(a, n);
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(const auto&amp; x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n^2)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: mango apple orange banana grape
+Sorted array: apple banana grape mango orange
+Best: O(n); Worst: O(n²).</pre>
+<hr>
+<br>
+<b>QUESTION 15:-</b><br>
+<p>Enter a string array from the user and perform Insertion Sort through iteration. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;string&gt; a(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+    for(int i = 1; i &lt; n; i++) {
+        string key = a[i];
+        int j = i - 1;
+        while(j &gt;= 0 &amp;&amp; a[j] &gt; key) {
+            a[j + 1] = a[j];
+            j--;
+        }
+        a[j + 1] = key;
+    }
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(const auto&amp; x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n^2)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: mango apple orange banana grape
+Sorted array: apple banana grape mango orange
+Best: O(n); Worst: O(n²).</pre>
+<hr>
+<br>
+<b>QUESTION 16:-</b><br>
+<p>Enter a string array from the user and perform Insertion Sort through recursion. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+void sortArray(vector&lt;string&gt;&amp; a, int n) {
+    if(n &lt;= 1) return;
+    sortArray(a, n - 1);
+    string key = a[n - 1];
+    int j = n - 2;
+    while(j &gt;= 0 &amp;&amp; a[j] &gt; key) {
+        a[j + 1] = a[j];
+        j--;
+    }
+    a[j + 1] = key;
+}
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;string&gt; a(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+    sortArray(a, n);
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(const auto&amp; x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n^2)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: mango apple orange banana grape
+Sorted array: apple banana grape mango orange
+Best: O(n); Worst: O(n²).</pre>
+<hr>
+<br>
+<b>QUESTION 17:-</b><br>
+<p>Enter a string array from the user and perform Merge Sort through iteration. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;string&gt; a(n), temp(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+
+    for(int width = 1; width &lt; n; width *= 2) {
+        for(int left = 0; left &lt; n; left += 2 * width) {
+            int mid = min(left + width, n);
+            int right = min(left + 2 * width, n);
+            int i = left, j = mid, k = left;
+            while(i &lt; mid &amp;&amp; j &lt; right)
+                temp[k++] = (a[i] &lt;= a[j]) ? a[i++] : a[j++];
+            while(i &lt; mid) temp[k++] = a[i++];
+            while(j &lt; right) temp[k++] = a[j++];
+            for(int p = left; p &lt; right; p++) a[p] = temp[p];
+        }
+    }
+
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(const auto&amp; x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n log n)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n log n)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: mango apple orange banana grape
+Sorted array: apple banana grape mango orange
+Best: O(n log n); Worst: O(n log n).</pre>
+<hr>
+<br>
+<b>QUESTION 18:-</b><br>
+<p>Enter a string array from the user and perform Merge Sort through recursion. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+void merge(vector&lt;string&gt;&amp; a, vector&lt;string&gt;&amp; temp, int left, int mid, int right) {
+    int i = left, j = mid + 1, k = left;
+    while(i &lt;= mid &amp;&amp; j &lt;= right)
+        temp[k++] = (a[i] &lt;= a[j]) ? a[i++] : a[j++];
+    while(i &lt;= mid) temp[k++] = a[i++];
+    while(j &lt;= right) temp[k++] = a[j++];
+    for(int p = left; p &lt;= right; p++) a[p] = temp[p];
+}
+
+void mergeSort(vector&lt;string&gt;&amp; a, vector&lt;string&gt;&amp; temp, int left, int right) {
+    if(left &gt;= right) return;
+    int mid = left + (right - left) / 2;
+    mergeSort(a, temp, left, mid);
+    mergeSort(a, temp, mid + 1, right);
+    merge(a, temp, left, mid, right);
+}
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;string&gt; a(n), temp(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+
+    mergeSort(a, temp, 0, n - 1);
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(const auto&amp; x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n log n)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n log n)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: mango apple orange banana grape
+Sorted array: apple banana grape mango orange
+Best: O(n log n); Worst: O(n log n).</pre>
+<hr>
+<br>
+<b>QUESTION 19:-</b><br>
+<p>Enter a string array from the user and perform Quick Sort through iteration. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int partitionArray(vector&lt;string&gt;&amp; a, int low, int high) {
+    string pivot = a[high];
+    int i = low - 1;
+    for(int j = low; j &lt; high; j++) {
+        if(a[j] &lt;= pivot) {
+            i++;
+            swap(a[i], a[j]);
+        }
+    }
+    swap(a[i + 1], a[high]);
+    return i + 1;
+}
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;string&gt; a(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+
+    vector&lt;pair&lt;int, int&gt;&gt; st;
+    if(n &gt; 1) st.push_back({0, n - 1});
+    while(!st.empty()) {
+        int low = st.back().first, high = st.back().second;
+        st.pop_back();
+        if(low &lt; high) {
+            int p = partitionArray(a, low, high);
+            if(p - 1 &gt; low) st.push_back({low, p - 1});
+            if(p + 1 &lt; high) st.push_back({p + 1, high});
+        }
+    }
+
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(const auto&amp; x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n log n)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n^2)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: mango apple orange banana grape
+Sorted array: apple banana grape mango orange
+Best: O(n log n); Worst: O(n²).</pre>
+<hr>
+<br>
+<b>QUESTION 20:-</b><br>
+<p>Enter a string array from the user and perform Quick Sort through recursion. Also calculate the best and worst time complexity.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int partitionArray(vector&lt;string&gt;&amp; a, int low, int high) {
+    string pivot = a[high];
+    int i = low - 1;
+    for(int j = low; j &lt; high; j++) {
+        if(a[j] &lt;= pivot) {
+            i++;
+            swap(a[i], a[j]);
+        }
+    }
+    swap(a[i + 1], a[high]);
+    return i + 1;
+}
+
+void quickSort(vector&lt;string&gt;&amp; a, int low, int high) {
+    if(low &lt; high) {
+        int p = partitionArray(a, low, high);
+        quickSort(a, low, p - 1);
+        quickSort(a, p + 1, high);
+    }
+}
+
+int main() {
+    int n;
+    cout &lt;&lt; &quot;Enter size of array: &quot;;
+    cin &gt;&gt; n;
+    vector&lt;string&gt; a(n);
+    cout &lt;&lt; &quot;Enter elements: &quot;;
+    for(int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+
+    quickSort(a, 0, n - 1);
+    cout &lt;&lt; &quot;Sorted array: &quot;;
+    for(const auto&amp; x : a) cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\nBest time complexity: O(n log n)&quot;;
+    cout &lt;&lt; &quot;\nWorst time complexity: O(n^2)\n&quot;;
+    return 0;
+}</pre><br>
+<b>OUTPUT:-</b><br>
+<pre>Enter size of array: 5
+Enter elements: mango apple orange banana grape
+Sorted array: apple banana grape mango orange
+Best: O(n log n); Worst: O(n²).</pre>
+<hr>
+</body>
+</html>

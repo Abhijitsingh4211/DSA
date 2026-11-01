@@ -1,0 +1,2081 @@
+<html>
+<head>
+LINKED LIST PROGRAMS
+</head>
+<body>
+<br>
+<b>QUESTION 1:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF SINGLE LINKED LIST STORING INTEGER VALUES (INSERT AT BEGIN, INSERT AT POS, INSERT AT END, DELETE AT BEGIN, DELETE AT END, DELETE AT POS, ISEMPTY, ISFULL, DISPLAY, SEARCH)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#define CIRCULAR 0
+#define DOUBLY 0
+struct Node {
+    int data;
+    struct Node *prev;
+    struct Node *next;
+};
+struct Node *head=NULL;
+struct Node *newNode(int value) {
+    struct Node *n=(struct Node*)malloc(sizeof(struct Node));
+    if(!n) {
+        printf(&quot;Memory allocation failed\n&quot;);
+        exit(1);
+    }
+    n-&gt;data=value;
+    n-&gt;prev=NULL;
+    n-&gt;next=NULL;
+    return n;
+}
+void linearize(void) {
+    struct Node *p;
+    if(CIRCULAR &amp;&amp; head) {
+        p=head;
+        while(p-&gt;next!=head) p=p-&gt;next;
+        p-&gt;next=NULL;
+    }
+}
+void repair(void) {
+    struct Node *p=head,*prev=NULL;
+    while(p) {
+        if(DOUBLY) p-&gt;prev=prev;
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(CIRCULAR &amp;&amp; head) {
+        prev-&gt;next=head;
+        if(DOUBLY) head-&gt;prev=prev;
+    }
+}
+int isEmpty(void) {
+    return head==NULL;
+}
+int isFull(void) {
+    struct Node *p=(struct Node*)malloc(sizeof(struct Node));
+    if(!p) return 1;
+    free(p);
+    return 0;
+}
+void insertBegin(int value) {
+    struct Node *n=newNode(value);
+    linearize();
+    n-&gt;next=head;
+    head=n;
+    repair();
+}
+void insertEnd(int value) {
+    struct Node *n=newNode(value),*p;
+    linearize();
+    if(!head) head=n;
+    else {
+        p=head;
+        while(p-&gt;next) p=p-&gt;next;
+        p-&gt;next=n;
+    }
+    repair();
+}
+void insertPos(int value,int pos) {
+    int i;
+    struct Node *p,*n;
+    if(pos&lt;=1 || !head) {
+        insertBegin(value);
+        return;
+    }
+    linearize();
+    p=head;
+    for(i=1;i&lt;pos-1 &amp;&amp; p-&gt;next;i++) p=p-&gt;next;
+    n=newNode(value);
+    n-&gt;next=p-&gt;next;
+    p-&gt;next=n;
+    repair();
+}
+void deleteBegin(void) {
+    struct Node *p;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    p=head;
+    head=head-&gt;next;
+    free(p);
+    repair();
+}
+void deleteEnd(void) {
+    struct Node *p,*prev=NULL;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    p=head;
+    while(p-&gt;next) {
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(prev) prev-&gt;next=NULL;
+    else head=NULL;
+    free(p);
+    repair();
+}
+void deletePos(int pos) {
+    int i;
+    struct Node *p,*prev=NULL;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    if(pos&lt;=1) {
+        p=head;
+        head=head-&gt;next;
+        free(p);
+        repair();
+        return;
+    }
+    p=head;
+    for(i=1;i&lt;pos &amp;&amp; p;i++) {
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(!p) {
+        printf(&quot;Invalid position\n&quot;);
+        repair();
+        return;
+    }
+    prev-&gt;next=p-&gt;next;
+    free(p);
+    repair();
+}
+void display(void) {
+    struct Node *p=head;
+    if(!p) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    do {
+        printf(&quot;%d &quot;,p-&gt;data);
+        p=p-&gt;next;
+    }
+    while(p &amp;&amp; (!CIRCULAR || p!=head));
+    printf(&quot;\n&quot;);
+}
+int search(int value) {
+    int pos=1;
+    struct Node *p=head;
+    if(!p) return -1;
+    do {
+        if(p-&gt;data==value) return pos;
+        p=p-&gt;next;
+        pos++;
+    }
+    while(p &amp;&amp; (!CIRCULAR || p!=head));
+    return -1;
+}
+int main(void) {
+    int choice,pos,found;
+    int value;
+    do {
+        printf(&quot;\n1.Insert at begin\n2.Insert at position\n3.Insert at end\n4.Delete at begin\n5.Delete at end\n6.Delete at position\n7.IsEmpty\n8.IsFull\n9.Display\n10.Search\n0.Exit\nEnter choice: &quot;);
+        if(scanf(&quot;%d&quot;,&amp;choice)!=1) break;
+        switch(choice) {
+            case 1: printf(&quot;Enter value: &quot;);
+            scanf(&quot;%d&quot;,&amp;value);
+            insertBegin(value);
+            break;
+            case 2: printf(&quot;Enter value and position: &quot;);
+            scanf(&quot;%d %d&quot;,&amp;value,&amp;pos);
+            insertPos(value,pos);
+            break;
+            case 3: printf(&quot;Enter value: &quot;);
+            scanf(&quot;%d&quot;,&amp;value);
+            insertEnd(value);
+            break;
+            case 4: deleteBegin();
+            break;
+            case 5: deleteEnd();
+            break;
+            case 6: printf(&quot;Enter position: &quot;);
+            scanf(&quot;%d&quot;,&amp;pos);
+            deletePos(pos);
+            break;
+            case 7: printf(isEmpty()?&quot;List is empty\n&quot;:&quot;List is not empty\n&quot;);
+            break;
+            case 8: printf(isFull()?&quot;Memory allocation unavailable\n&quot;:&quot;Memory available\n&quot;);
+            break;
+            case 9: display();
+            break;
+            case 10: printf(&quot;Enter value to search: &quot;);
+            scanf(&quot;%d&quot;,&amp;value);
+            found=search(value);
+            if(found&lt;0) printf(&quot;Value not found\n&quot;);
+            else printf(&quot;Value found at position %d\n&quot;,found);
+            break;
+            case 0: break;
+            default: printf(&quot;Invalid choice\n&quot;);
+        }
+    }
+    while(choice!=0);
+    return 0;
+}
+</pre>
+<b>OUTPUT:-</b><br>
+Enter choice: 1
+Enter value: 10
+Enter choice: 9
+10 
+Enter choice: 0
+<br>
+<hr>
+<br>
+<b>QUESTION 2:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF SINGLE CIRCULAR LINKED LIST STORING INTEGER VALUES (INSERT AT BEGIN, INSERT AT POS, INSERT AT END, DELETE AT BEGIN, DELETE AT END, DELETE AT POS, ISEMPTY, ISFULL, DISPLAY, SEARCH)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#define CIRCULAR 1
+#define DOUBLY 0
+struct Node {
+    int data;
+    struct Node *prev;
+    struct Node *next;
+};
+struct Node *head=NULL;
+struct Node *newNode(int value) {
+    struct Node *n=(struct Node*)malloc(sizeof(struct Node));
+    if(!n) {
+        printf(&quot;Memory allocation failed\n&quot;);
+        exit(1);
+    }
+    n-&gt;data=value;
+    n-&gt;prev=NULL;
+    n-&gt;next=NULL;
+    return n;
+}
+void linearize(void) {
+    struct Node *p;
+    if(CIRCULAR &amp;&amp; head) {
+        p=head;
+        while(p-&gt;next!=head) p=p-&gt;next;
+        p-&gt;next=NULL;
+    }
+}
+void repair(void) {
+    struct Node *p=head,*prev=NULL;
+    while(p) {
+        if(DOUBLY) p-&gt;prev=prev;
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(CIRCULAR &amp;&amp; head) {
+        prev-&gt;next=head;
+        if(DOUBLY) head-&gt;prev=prev;
+    }
+}
+int isEmpty(void) {
+    return head==NULL;
+}
+int isFull(void) {
+    struct Node *p=(struct Node*)malloc(sizeof(struct Node));
+    if(!p) return 1;
+    free(p);
+    return 0;
+}
+void insertBegin(int value) {
+    struct Node *n=newNode(value);
+    linearize();
+    n-&gt;next=head;
+    head=n;
+    repair();
+}
+void insertEnd(int value) {
+    struct Node *n=newNode(value),*p;
+    linearize();
+    if(!head) head=n;
+    else {
+        p=head;
+        while(p-&gt;next) p=p-&gt;next;
+        p-&gt;next=n;
+    }
+    repair();
+}
+void insertPos(int value,int pos) {
+    int i;
+    struct Node *p,*n;
+    if(pos&lt;=1 || !head) {
+        insertBegin(value);
+        return;
+    }
+    linearize();
+    p=head;
+    for(i=1;i&lt;pos-1 &amp;&amp; p-&gt;next;i++) p=p-&gt;next;
+    n=newNode(value);
+    n-&gt;next=p-&gt;next;
+    p-&gt;next=n;
+    repair();
+}
+void deleteBegin(void) {
+    struct Node *p;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    p=head;
+    head=head-&gt;next;
+    free(p);
+    repair();
+}
+void deleteEnd(void) {
+    struct Node *p,*prev=NULL;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    p=head;
+    while(p-&gt;next) {
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(prev) prev-&gt;next=NULL;
+    else head=NULL;
+    free(p);
+    repair();
+}
+void deletePos(int pos) {
+    int i;
+    struct Node *p,*prev=NULL;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    if(pos&lt;=1) {
+        p=head;
+        head=head-&gt;next;
+        free(p);
+        repair();
+        return;
+    }
+    p=head;
+    for(i=1;i&lt;pos &amp;&amp; p;i++) {
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(!p) {
+        printf(&quot;Invalid position\n&quot;);
+        repair();
+        return;
+    }
+    prev-&gt;next=p-&gt;next;
+    free(p);
+    repair();
+}
+void display(void) {
+    struct Node *p=head;
+    if(!p) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    do {
+        printf(&quot;%d &quot;,p-&gt;data);
+        p=p-&gt;next;
+    }
+    while(p &amp;&amp; (!CIRCULAR || p!=head));
+    printf(&quot;\n&quot;);
+}
+int search(int value) {
+    int pos=1;
+    struct Node *p=head;
+    if(!p) return -1;
+    do {
+        if(p-&gt;data==value) return pos;
+        p=p-&gt;next;
+        pos++;
+    }
+    while(p &amp;&amp; (!CIRCULAR || p!=head));
+    return -1;
+}
+int main(void) {
+    int choice,pos,found;
+    int value;
+    do {
+        printf(&quot;\n1.Insert at begin\n2.Insert at position\n3.Insert at end\n4.Delete at begin\n5.Delete at end\n6.Delete at position\n7.IsEmpty\n8.IsFull\n9.Display\n10.Search\n0.Exit\nEnter choice: &quot;);
+        if(scanf(&quot;%d&quot;,&amp;choice)!=1) break;
+        switch(choice) {
+            case 1: printf(&quot;Enter value: &quot;);
+            scanf(&quot;%d&quot;,&amp;value);
+            insertBegin(value);
+            break;
+            case 2: printf(&quot;Enter value and position: &quot;);
+            scanf(&quot;%d %d&quot;,&amp;value,&amp;pos);
+            insertPos(value,pos);
+            break;
+            case 3: printf(&quot;Enter value: &quot;);
+            scanf(&quot;%d&quot;,&amp;value);
+            insertEnd(value);
+            break;
+            case 4: deleteBegin();
+            break;
+            case 5: deleteEnd();
+            break;
+            case 6: printf(&quot;Enter position: &quot;);
+            scanf(&quot;%d&quot;,&amp;pos);
+            deletePos(pos);
+            break;
+            case 7: printf(isEmpty()?&quot;List is empty\n&quot;:&quot;List is not empty\n&quot;);
+            break;
+            case 8: printf(isFull()?&quot;Memory allocation unavailable\n&quot;:&quot;Memory available\n&quot;);
+            break;
+            case 9: display();
+            break;
+            case 10: printf(&quot;Enter value to search: &quot;);
+            scanf(&quot;%d&quot;,&amp;value);
+            found=search(value);
+            if(found&lt;0) printf(&quot;Value not found\n&quot;);
+            else printf(&quot;Value found at position %d\n&quot;,found);
+            break;
+            case 0: break;
+            default: printf(&quot;Invalid choice\n&quot;);
+        }
+    }
+    while(choice!=0);
+    return 0;
+}
+</pre>
+<b>OUTPUT:-</b><br>
+Enter choice: 1
+Enter value: 10
+Enter choice: 9
+10 
+Enter choice: 0
+<br>
+<hr>
+<br>
+<b>QUESTION 3:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF DOUBLY LINKED LIST STORING INTEGER VALUES (INSERT AT BEGIN, INSERT AT POS, INSERT AT END, DELETE AT BEGIN, DELETE AT END, DELETE AT POS, ISEMPTY, ISFULL, DISPLAY, SEARCH)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#define CIRCULAR 0
+#define DOUBLY 1
+struct Node {
+    int data;
+    struct Node *prev;
+    struct Node *next;
+};
+struct Node *head=NULL;
+struct Node *newNode(int value) {
+    struct Node *n=(struct Node*)malloc(sizeof(struct Node));
+    if(!n) {
+        printf(&quot;Memory allocation failed\n&quot;);
+        exit(1);
+    }
+    n-&gt;data=value;
+    n-&gt;prev=NULL;
+    n-&gt;next=NULL;
+    return n;
+}
+void linearize(void) {
+    struct Node *p;
+    if(CIRCULAR &amp;&amp; head) {
+        p=head;
+        while(p-&gt;next!=head) p=p-&gt;next;
+        p-&gt;next=NULL;
+    }
+}
+void repair(void) {
+    struct Node *p=head,*prev=NULL;
+    while(p) {
+        if(DOUBLY) p-&gt;prev=prev;
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(CIRCULAR &amp;&amp; head) {
+        prev-&gt;next=head;
+        if(DOUBLY) head-&gt;prev=prev;
+    }
+}
+int isEmpty(void) {
+    return head==NULL;
+}
+int isFull(void) {
+    struct Node *p=(struct Node*)malloc(sizeof(struct Node));
+    if(!p) return 1;
+    free(p);
+    return 0;
+}
+void insertBegin(int value) {
+    struct Node *n=newNode(value);
+    linearize();
+    n-&gt;next=head;
+    head=n;
+    repair();
+}
+void insertEnd(int value) {
+    struct Node *n=newNode(value),*p;
+    linearize();
+    if(!head) head=n;
+    else {
+        p=head;
+        while(p-&gt;next) p=p-&gt;next;
+        p-&gt;next=n;
+    }
+    repair();
+}
+void insertPos(int value,int pos) {
+    int i;
+    struct Node *p,*n;
+    if(pos&lt;=1 || !head) {
+        insertBegin(value);
+        return;
+    }
+    linearize();
+    p=head;
+    for(i=1;i&lt;pos-1 &amp;&amp; p-&gt;next;i++) p=p-&gt;next;
+    n=newNode(value);
+    n-&gt;next=p-&gt;next;
+    p-&gt;next=n;
+    repair();
+}
+void deleteBegin(void) {
+    struct Node *p;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    p=head;
+    head=head-&gt;next;
+    free(p);
+    repair();
+}
+void deleteEnd(void) {
+    struct Node *p,*prev=NULL;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    p=head;
+    while(p-&gt;next) {
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(prev) prev-&gt;next=NULL;
+    else head=NULL;
+    free(p);
+    repair();
+}
+void deletePos(int pos) {
+    int i;
+    struct Node *p,*prev=NULL;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    if(pos&lt;=1) {
+        p=head;
+        head=head-&gt;next;
+        free(p);
+        repair();
+        return;
+    }
+    p=head;
+    for(i=1;i&lt;pos &amp;&amp; p;i++) {
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(!p) {
+        printf(&quot;Invalid position\n&quot;);
+        repair();
+        return;
+    }
+    prev-&gt;next=p-&gt;next;
+    free(p);
+    repair();
+}
+void display(void) {
+    struct Node *p=head;
+    if(!p) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    do {
+        printf(&quot;%d &quot;,p-&gt;data);
+        p=p-&gt;next;
+    }
+    while(p &amp;&amp; (!CIRCULAR || p!=head));
+    printf(&quot;\n&quot;);
+}
+int search(int value) {
+    int pos=1;
+    struct Node *p=head;
+    if(!p) return -1;
+    do {
+        if(p-&gt;data==value) return pos;
+        p=p-&gt;next;
+        pos++;
+    }
+    while(p &amp;&amp; (!CIRCULAR || p!=head));
+    return -1;
+}
+int main(void) {
+    int choice,pos,found;
+    int value;
+    do {
+        printf(&quot;\n1.Insert at begin\n2.Insert at position\n3.Insert at end\n4.Delete at begin\n5.Delete at end\n6.Delete at position\n7.IsEmpty\n8.IsFull\n9.Display\n10.Search\n0.Exit\nEnter choice: &quot;);
+        if(scanf(&quot;%d&quot;,&amp;choice)!=1) break;
+        switch(choice) {
+            case 1: printf(&quot;Enter value: &quot;);
+            scanf(&quot;%d&quot;,&amp;value);
+            insertBegin(value);
+            break;
+            case 2: printf(&quot;Enter value and position: &quot;);
+            scanf(&quot;%d %d&quot;,&amp;value,&amp;pos);
+            insertPos(value,pos);
+            break;
+            case 3: printf(&quot;Enter value: &quot;);
+            scanf(&quot;%d&quot;,&amp;value);
+            insertEnd(value);
+            break;
+            case 4: deleteBegin();
+            break;
+            case 5: deleteEnd();
+            break;
+            case 6: printf(&quot;Enter position: &quot;);
+            scanf(&quot;%d&quot;,&amp;pos);
+            deletePos(pos);
+            break;
+            case 7: printf(isEmpty()?&quot;List is empty\n&quot;:&quot;List is not empty\n&quot;);
+            break;
+            case 8: printf(isFull()?&quot;Memory allocation unavailable\n&quot;:&quot;Memory available\n&quot;);
+            break;
+            case 9: display();
+            break;
+            case 10: printf(&quot;Enter value to search: &quot;);
+            scanf(&quot;%d&quot;,&amp;value);
+            found=search(value);
+            if(found&lt;0) printf(&quot;Value not found\n&quot;);
+            else printf(&quot;Value found at position %d\n&quot;,found);
+            break;
+            case 0: break;
+            default: printf(&quot;Invalid choice\n&quot;);
+        }
+    }
+    while(choice!=0);
+    return 0;
+}
+</pre>
+<b>OUTPUT:-</b><br>
+Enter choice: 1
+Enter value: 10
+Enter choice: 9
+10 
+Enter choice: 0
+<br>
+<hr>
+<br>
+<b>QUESTION 4:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF DOUBLY CIRCULAR LINKED LIST STORING INTEGER VALUES (INSERT AT BEGIN, INSERT AT POS, INSERT AT END, DELETE AT BEGIN, DELETE AT END, DELETE AT POS, ISEMPTY, ISFULL, DISPLAY, SEARCH)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#define CIRCULAR 1
+#define DOUBLY 1
+struct Node {
+    int data;
+    struct Node *prev;
+    struct Node *next;
+};
+struct Node *head=NULL;
+struct Node *newNode(int value) {
+    struct Node *n=(struct Node*)malloc(sizeof(struct Node));
+    if(!n) {
+        printf(&quot;Memory allocation failed\n&quot;);
+        exit(1);
+    }
+    n-&gt;data=value;
+    n-&gt;prev=NULL;
+    n-&gt;next=NULL;
+    return n;
+}
+void linearize(void) {
+    struct Node *p;
+    if(CIRCULAR &amp;&amp; head) {
+        p=head;
+        while(p-&gt;next!=head) p=p-&gt;next;
+        p-&gt;next=NULL;
+    }
+}
+void repair(void) {
+    struct Node *p=head,*prev=NULL;
+    while(p) {
+        if(DOUBLY) p-&gt;prev=prev;
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(CIRCULAR &amp;&amp; head) {
+        prev-&gt;next=head;
+        if(DOUBLY) head-&gt;prev=prev;
+    }
+}
+int isEmpty(void) {
+    return head==NULL;
+}
+int isFull(void) {
+    struct Node *p=(struct Node*)malloc(sizeof(struct Node));
+    if(!p) return 1;
+    free(p);
+    return 0;
+}
+void insertBegin(int value) {
+    struct Node *n=newNode(value);
+    linearize();
+    n-&gt;next=head;
+    head=n;
+    repair();
+}
+void insertEnd(int value) {
+    struct Node *n=newNode(value),*p;
+    linearize();
+    if(!head) head=n;
+    else {
+        p=head;
+        while(p-&gt;next) p=p-&gt;next;
+        p-&gt;next=n;
+    }
+    repair();
+}
+void insertPos(int value,int pos) {
+    int i;
+    struct Node *p,*n;
+    if(pos&lt;=1 || !head) {
+        insertBegin(value);
+        return;
+    }
+    linearize();
+    p=head;
+    for(i=1;i&lt;pos-1 &amp;&amp; p-&gt;next;i++) p=p-&gt;next;
+    n=newNode(value);
+    n-&gt;next=p-&gt;next;
+    p-&gt;next=n;
+    repair();
+}
+void deleteBegin(void) {
+    struct Node *p;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    p=head;
+    head=head-&gt;next;
+    free(p);
+    repair();
+}
+void deleteEnd(void) {
+    struct Node *p,*prev=NULL;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    p=head;
+    while(p-&gt;next) {
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(prev) prev-&gt;next=NULL;
+    else head=NULL;
+    free(p);
+    repair();
+}
+void deletePos(int pos) {
+    int i;
+    struct Node *p,*prev=NULL;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    if(pos&lt;=1) {
+        p=head;
+        head=head-&gt;next;
+        free(p);
+        repair();
+        return;
+    }
+    p=head;
+    for(i=1;i&lt;pos &amp;&amp; p;i++) {
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(!p) {
+        printf(&quot;Invalid position\n&quot;);
+        repair();
+        return;
+    }
+    prev-&gt;next=p-&gt;next;
+    free(p);
+    repair();
+}
+void display(void) {
+    struct Node *p=head;
+    if(!p) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    do {
+        printf(&quot;%d &quot;,p-&gt;data);
+        p=p-&gt;next;
+    }
+    while(p &amp;&amp; (!CIRCULAR || p!=head));
+    printf(&quot;\n&quot;);
+}
+int search(int value) {
+    int pos=1;
+    struct Node *p=head;
+    if(!p) return -1;
+    do {
+        if(p-&gt;data==value) return pos;
+        p=p-&gt;next;
+        pos++;
+    }
+    while(p &amp;&amp; (!CIRCULAR || p!=head));
+    return -1;
+}
+int main(void) {
+    int choice,pos,found;
+    int value;
+    do {
+        printf(&quot;\n1.Insert at begin\n2.Insert at position\n3.Insert at end\n4.Delete at begin\n5.Delete at end\n6.Delete at position\n7.IsEmpty\n8.IsFull\n9.Display\n10.Search\n0.Exit\nEnter choice: &quot;);
+        if(scanf(&quot;%d&quot;,&amp;choice)!=1) break;
+        switch(choice) {
+            case 1: printf(&quot;Enter value: &quot;);
+            scanf(&quot;%d&quot;,&amp;value);
+            insertBegin(value);
+            break;
+            case 2: printf(&quot;Enter value and position: &quot;);
+            scanf(&quot;%d %d&quot;,&amp;value,&amp;pos);
+            insertPos(value,pos);
+            break;
+            case 3: printf(&quot;Enter value: &quot;);
+            scanf(&quot;%d&quot;,&amp;value);
+            insertEnd(value);
+            break;
+            case 4: deleteBegin();
+            break;
+            case 5: deleteEnd();
+            break;
+            case 6: printf(&quot;Enter position: &quot;);
+            scanf(&quot;%d&quot;,&amp;pos);
+            deletePos(pos);
+            break;
+            case 7: printf(isEmpty()?&quot;List is empty\n&quot;:&quot;List is not empty\n&quot;);
+            break;
+            case 8: printf(isFull()?&quot;Memory allocation unavailable\n&quot;:&quot;Memory available\n&quot;);
+            break;
+            case 9: display();
+            break;
+            case 10: printf(&quot;Enter value to search: &quot;);
+            scanf(&quot;%d&quot;,&amp;value);
+            found=search(value);
+            if(found&lt;0) printf(&quot;Value not found\n&quot;);
+            else printf(&quot;Value found at position %d\n&quot;,found);
+            break;
+            case 0: break;
+            default: printf(&quot;Invalid choice\n&quot;);
+        }
+    }
+    while(choice!=0);
+    return 0;
+}
+</pre>
+<b>OUTPUT:-</b><br>
+Enter choice: 1
+Enter value: 10
+Enter choice: 9
+10 
+Enter choice: 0
+<br>
+<hr>
+<br>
+<b>QUESTION 5:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF SINGLE LINKED LIST STORING STRING VALUES (INSERT AT BEGIN, INSERT AT POS, INSERT AT END, DELETE AT BEGIN, DELETE AT END, DELETE AT POS, ISEMPTY, ISFULL, DISPLAY, SEARCH)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#define CIRCULAR 0
+#define DOUBLY 0
+struct Node {
+    char data[100];
+    struct Node *prev;
+    struct Node *next;
+};
+struct Node *head=NULL;
+struct Node *newNode(char value[100]) {
+    struct Node *n=(struct Node*)malloc(sizeof(struct Node));
+    if(!n) {
+        printf(&quot;Memory allocation failed\n&quot;);
+        exit(1);
+    }
+    strcpy(n-&gt;data,value);
+    n-&gt;prev=NULL;
+    n-&gt;next=NULL;
+    return n;
+}
+void linearize(void) {
+    struct Node *p;
+    if(CIRCULAR &amp;&amp; head) {
+        p=head;
+        while(p-&gt;next!=head) p=p-&gt;next;
+        p-&gt;next=NULL;
+    }
+}
+void repair(void) {
+    struct Node *p=head,*prev=NULL;
+    while(p) {
+        if(DOUBLY) p-&gt;prev=prev;
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(CIRCULAR &amp;&amp; head) {
+        prev-&gt;next=head;
+        if(DOUBLY) head-&gt;prev=prev;
+    }
+}
+int isEmpty(void) {
+    return head==NULL;
+}
+int isFull(void) {
+    struct Node *p=(struct Node*)malloc(sizeof(struct Node));
+    if(!p) return 1;
+    free(p);
+    return 0;
+}
+void insertBegin(char value[100]) {
+    struct Node *n=newNode(value);
+    linearize();
+    n-&gt;next=head;
+    head=n;
+    repair();
+}
+void insertEnd(char value[100]) {
+    struct Node *n=newNode(value),*p;
+    linearize();
+    if(!head) head=n;
+    else {
+        p=head;
+        while(p-&gt;next) p=p-&gt;next;
+        p-&gt;next=n;
+    }
+    repair();
+}
+void insertPos(char value[100],int pos) {
+    int i;
+    struct Node *p,*n;
+    if(pos&lt;=1 || !head) {
+        insertBegin(value);
+        return;
+    }
+    linearize();
+    p=head;
+    for(i=1;i&lt;pos-1 &amp;&amp; p-&gt;next;i++) p=p-&gt;next;
+    n=newNode(value);
+    n-&gt;next=p-&gt;next;
+    p-&gt;next=n;
+    repair();
+}
+void deleteBegin(void) {
+    struct Node *p;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    p=head;
+    head=head-&gt;next;
+    free(p);
+    repair();
+}
+void deleteEnd(void) {
+    struct Node *p,*prev=NULL;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    p=head;
+    while(p-&gt;next) {
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(prev) prev-&gt;next=NULL;
+    else head=NULL;
+    free(p);
+    repair();
+}
+void deletePos(int pos) {
+    int i;
+    struct Node *p,*prev=NULL;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    if(pos&lt;=1) {
+        p=head;
+        head=head-&gt;next;
+        free(p);
+        repair();
+        return;
+    }
+    p=head;
+    for(i=1;i&lt;pos &amp;&amp; p;i++) {
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(!p) {
+        printf(&quot;Invalid position\n&quot;);
+        repair();
+        return;
+    }
+    prev-&gt;next=p-&gt;next;
+    free(p);
+    repair();
+}
+void display(void) {
+    struct Node *p=head;
+    if(!p) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    do {
+        printf(&quot;%s &quot;,p-&gt;data);
+        p=p-&gt;next;
+    }
+    while(p &amp;&amp; (!CIRCULAR || p!=head));
+    printf(&quot;\n&quot;);
+}
+int search(char value[100]) {
+    int pos=1;
+    struct Node *p=head;
+    if(!p) return -1;
+    do {
+        if(strcmp(p-&gt;data,value)==0) return pos;
+        p=p-&gt;next;
+        pos++;
+    }
+    while(p &amp;&amp; (!CIRCULAR || p!=head));
+    return -1;
+}
+int main(void) {
+    int choice,pos,found;
+    char value[100];
+    do {
+        printf(&quot;\n1.Insert at begin\n2.Insert at position\n3.Insert at end\n4.Delete at begin\n5.Delete at end\n6.Delete at position\n7.IsEmpty\n8.IsFull\n9.Display\n10.Search\n0.Exit\nEnter choice: &quot;);
+        if(scanf(&quot;%d&quot;,&amp;choice)!=1) break;
+        switch(choice) {
+            case 1: printf(&quot;Enter value: &quot;);
+            scanf(&quot;%99s&quot;,value);
+            insertBegin(value);
+            break;
+            case 2: printf(&quot;Enter value and position: &quot;);
+            scanf(&quot;%99s %d&quot;,value,&amp;pos);
+            insertPos(value,pos);
+            break;
+            case 3: printf(&quot;Enter value: &quot;);
+            scanf(&quot;%99s&quot;,value);
+            insertEnd(value);
+            break;
+            case 4: deleteBegin();
+            break;
+            case 5: deleteEnd();
+            break;
+            case 6: printf(&quot;Enter position: &quot;);
+            scanf(&quot;%d&quot;,&amp;pos);
+            deletePos(pos);
+            break;
+            case 7: printf(isEmpty()?&quot;List is empty\n&quot;:&quot;List is not empty\n&quot;);
+            break;
+            case 8: printf(isFull()?&quot;Memory allocation unavailable\n&quot;:&quot;Memory available\n&quot;);
+            break;
+            case 9: display();
+            break;
+            case 10: printf(&quot;Enter value to search: &quot;);
+            scanf(&quot;%99s&quot;,value);
+            found=search(value);
+            if(found&lt;0) printf(&quot;Value not found\n&quot;);
+            else printf(&quot;Value found at position %d\n&quot;,found);
+            break;
+            case 0: break;
+            default: printf(&quot;Invalid choice\n&quot;);
+        }
+    }
+    while(choice!=0);
+    return 0;
+}
+</pre>
+<b>OUTPUT:-</b><br>
+Enter choice: 1
+Enter value: Hello
+Enter choice: 9
+Hello 
+Enter choice: 0
+<br>
+<hr>
+<br>
+<b>QUESTION 6:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF SINGLE CIRCULAR LINKED LIST STORING STRING VALUES (INSERT AT BEGIN, INSERT AT POS, INSERT AT END, DELETE AT BEGIN, DELETE AT END, DELETE AT POS, ISEMPTY, ISFULL, DISPLAY, SEARCH)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#define CIRCULAR 1
+#define DOUBLY 0
+struct Node {
+    char data[100];
+    struct Node *prev;
+    struct Node *next;
+};
+struct Node *head=NULL;
+struct Node *newNode(char value[100]) {
+    struct Node *n=(struct Node*)malloc(sizeof(struct Node));
+    if(!n) {
+        printf(&quot;Memory allocation failed\n&quot;);
+        exit(1);
+    }
+    strcpy(n-&gt;data,value);
+    n-&gt;prev=NULL;
+    n-&gt;next=NULL;
+    return n;
+}
+void linearize(void) {
+    struct Node *p;
+    if(CIRCULAR &amp;&amp; head) {
+        p=head;
+        while(p-&gt;next!=head) p=p-&gt;next;
+        p-&gt;next=NULL;
+    }
+}
+void repair(void) {
+    struct Node *p=head,*prev=NULL;
+    while(p) {
+        if(DOUBLY) p-&gt;prev=prev;
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(CIRCULAR &amp;&amp; head) {
+        prev-&gt;next=head;
+        if(DOUBLY) head-&gt;prev=prev;
+    }
+}
+int isEmpty(void) {
+    return head==NULL;
+}
+int isFull(void) {
+    struct Node *p=(struct Node*)malloc(sizeof(struct Node));
+    if(!p) return 1;
+    free(p);
+    return 0;
+}
+void insertBegin(char value[100]) {
+    struct Node *n=newNode(value);
+    linearize();
+    n-&gt;next=head;
+    head=n;
+    repair();
+}
+void insertEnd(char value[100]) {
+    struct Node *n=newNode(value),*p;
+    linearize();
+    if(!head) head=n;
+    else {
+        p=head;
+        while(p-&gt;next) p=p-&gt;next;
+        p-&gt;next=n;
+    }
+    repair();
+}
+void insertPos(char value[100],int pos) {
+    int i;
+    struct Node *p,*n;
+    if(pos&lt;=1 || !head) {
+        insertBegin(value);
+        return;
+    }
+    linearize();
+    p=head;
+    for(i=1;i&lt;pos-1 &amp;&amp; p-&gt;next;i++) p=p-&gt;next;
+    n=newNode(value);
+    n-&gt;next=p-&gt;next;
+    p-&gt;next=n;
+    repair();
+}
+void deleteBegin(void) {
+    struct Node *p;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    p=head;
+    head=head-&gt;next;
+    free(p);
+    repair();
+}
+void deleteEnd(void) {
+    struct Node *p,*prev=NULL;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    p=head;
+    while(p-&gt;next) {
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(prev) prev-&gt;next=NULL;
+    else head=NULL;
+    free(p);
+    repair();
+}
+void deletePos(int pos) {
+    int i;
+    struct Node *p,*prev=NULL;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    if(pos&lt;=1) {
+        p=head;
+        head=head-&gt;next;
+        free(p);
+        repair();
+        return;
+    }
+    p=head;
+    for(i=1;i&lt;pos &amp;&amp; p;i++) {
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(!p) {
+        printf(&quot;Invalid position\n&quot;);
+        repair();
+        return;
+    }
+    prev-&gt;next=p-&gt;next;
+    free(p);
+    repair();
+}
+void display(void) {
+    struct Node *p=head;
+    if(!p) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    do {
+        printf(&quot;%s &quot;,p-&gt;data);
+        p=p-&gt;next;
+    }
+    while(p &amp;&amp; (!CIRCULAR || p!=head));
+    printf(&quot;\n&quot;);
+}
+int search(char value[100]) {
+    int pos=1;
+    struct Node *p=head;
+    if(!p) return -1;
+    do {
+        if(strcmp(p-&gt;data,value)==0) return pos;
+        p=p-&gt;next;
+        pos++;
+    }
+    while(p &amp;&amp; (!CIRCULAR || p!=head));
+    return -1;
+}
+int main(void) {
+    int choice,pos,found;
+    char value[100];
+    do {
+        printf(&quot;\n1.Insert at begin\n2.Insert at position\n3.Insert at end\n4.Delete at begin\n5.Delete at end\n6.Delete at position\n7.IsEmpty\n8.IsFull\n9.Display\n10.Search\n0.Exit\nEnter choice: &quot;);
+        if(scanf(&quot;%d&quot;,&amp;choice)!=1) break;
+        switch(choice) {
+            case 1: printf(&quot;Enter value: &quot;);
+            scanf(&quot;%99s&quot;,value);
+            insertBegin(value);
+            break;
+            case 2: printf(&quot;Enter value and position: &quot;);
+            scanf(&quot;%99s %d&quot;,value,&amp;pos);
+            insertPos(value,pos);
+            break;
+            case 3: printf(&quot;Enter value: &quot;);
+            scanf(&quot;%99s&quot;,value);
+            insertEnd(value);
+            break;
+            case 4: deleteBegin();
+            break;
+            case 5: deleteEnd();
+            break;
+            case 6: printf(&quot;Enter position: &quot;);
+            scanf(&quot;%d&quot;,&amp;pos);
+            deletePos(pos);
+            break;
+            case 7: printf(isEmpty()?&quot;List is empty\n&quot;:&quot;List is not empty\n&quot;);
+            break;
+            case 8: printf(isFull()?&quot;Memory allocation unavailable\n&quot;:&quot;Memory available\n&quot;);
+            break;
+            case 9: display();
+            break;
+            case 10: printf(&quot;Enter value to search: &quot;);
+            scanf(&quot;%99s&quot;,value);
+            found=search(value);
+            if(found&lt;0) printf(&quot;Value not found\n&quot;);
+            else printf(&quot;Value found at position %d\n&quot;,found);
+            break;
+            case 0: break;
+            default: printf(&quot;Invalid choice\n&quot;);
+        }
+    }
+    while(choice!=0);
+    return 0;
+}
+</pre>
+<b>OUTPUT:-</b><br>
+Enter choice: 1
+Enter value: Hello
+Enter choice: 9
+Hello 
+Enter choice: 0
+<br>
+<hr>
+<br>
+<b>QUESTION 7:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF DOUBLY LINKED LIST STORING STRING VALUES (INSERT AT BEGIN, INSERT AT POS, INSERT AT END, DELETE AT BEGIN, DELETE AT END, DELETE AT POS, ISEMPTY, ISFULL, DISPLAY, SEARCH)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#define CIRCULAR 0
+#define DOUBLY 1
+struct Node {
+    char data[100];
+    struct Node *prev;
+    struct Node *next;
+};
+struct Node *head=NULL;
+struct Node *newNode(char value[100]) {
+    struct Node *n=(struct Node*)malloc(sizeof(struct Node));
+    if(!n) {
+        printf(&quot;Memory allocation failed\n&quot;);
+        exit(1);
+    }
+    strcpy(n-&gt;data,value);
+    n-&gt;prev=NULL;
+    n-&gt;next=NULL;
+    return n;
+}
+void linearize(void) {
+    struct Node *p;
+    if(CIRCULAR &amp;&amp; head) {
+        p=head;
+        while(p-&gt;next!=head) p=p-&gt;next;
+        p-&gt;next=NULL;
+    }
+}
+void repair(void) {
+    struct Node *p=head,*prev=NULL;
+    while(p) {
+        if(DOUBLY) p-&gt;prev=prev;
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(CIRCULAR &amp;&amp; head) {
+        prev-&gt;next=head;
+        if(DOUBLY) head-&gt;prev=prev;
+    }
+}
+int isEmpty(void) {
+    return head==NULL;
+}
+int isFull(void) {
+    struct Node *p=(struct Node*)malloc(sizeof(struct Node));
+    if(!p) return 1;
+    free(p);
+    return 0;
+}
+void insertBegin(char value[100]) {
+    struct Node *n=newNode(value);
+    linearize();
+    n-&gt;next=head;
+    head=n;
+    repair();
+}
+void insertEnd(char value[100]) {
+    struct Node *n=newNode(value),*p;
+    linearize();
+    if(!head) head=n;
+    else {
+        p=head;
+        while(p-&gt;next) p=p-&gt;next;
+        p-&gt;next=n;
+    }
+    repair();
+}
+void insertPos(char value[100],int pos) {
+    int i;
+    struct Node *p,*n;
+    if(pos&lt;=1 || !head) {
+        insertBegin(value);
+        return;
+    }
+    linearize();
+    p=head;
+    for(i=1;i&lt;pos-1 &amp;&amp; p-&gt;next;i++) p=p-&gt;next;
+    n=newNode(value);
+    n-&gt;next=p-&gt;next;
+    p-&gt;next=n;
+    repair();
+}
+void deleteBegin(void) {
+    struct Node *p;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    p=head;
+    head=head-&gt;next;
+    free(p);
+    repair();
+}
+void deleteEnd(void) {
+    struct Node *p,*prev=NULL;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    p=head;
+    while(p-&gt;next) {
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(prev) prev-&gt;next=NULL;
+    else head=NULL;
+    free(p);
+    repair();
+}
+void deletePos(int pos) {
+    int i;
+    struct Node *p,*prev=NULL;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    if(pos&lt;=1) {
+        p=head;
+        head=head-&gt;next;
+        free(p);
+        repair();
+        return;
+    }
+    p=head;
+    for(i=1;i&lt;pos &amp;&amp; p;i++) {
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(!p) {
+        printf(&quot;Invalid position\n&quot;);
+        repair();
+        return;
+    }
+    prev-&gt;next=p-&gt;next;
+    free(p);
+    repair();
+}
+void display(void) {
+    struct Node *p=head;
+    if(!p) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    do {
+        printf(&quot;%s &quot;,p-&gt;data);
+        p=p-&gt;next;
+    }
+    while(p &amp;&amp; (!CIRCULAR || p!=head));
+    printf(&quot;\n&quot;);
+}
+int search(char value[100]) {
+    int pos=1;
+    struct Node *p=head;
+    if(!p) return -1;
+    do {
+        if(strcmp(p-&gt;data,value)==0) return pos;
+        p=p-&gt;next;
+        pos++;
+    }
+    while(p &amp;&amp; (!CIRCULAR || p!=head));
+    return -1;
+}
+int main(void) {
+    int choice,pos,found;
+    char value[100];
+    do {
+        printf(&quot;\n1.Insert at begin\n2.Insert at position\n3.Insert at end\n4.Delete at begin\n5.Delete at end\n6.Delete at position\n7.IsEmpty\n8.IsFull\n9.Display\n10.Search\n0.Exit\nEnter choice: &quot;);
+        if(scanf(&quot;%d&quot;,&amp;choice)!=1) break;
+        switch(choice) {
+            case 1: printf(&quot;Enter value: &quot;);
+            scanf(&quot;%99s&quot;,value);
+            insertBegin(value);
+            break;
+            case 2: printf(&quot;Enter value and position: &quot;);
+            scanf(&quot;%99s %d&quot;,value,&amp;pos);
+            insertPos(value,pos);
+            break;
+            case 3: printf(&quot;Enter value: &quot;);
+            scanf(&quot;%99s&quot;,value);
+            insertEnd(value);
+            break;
+            case 4: deleteBegin();
+            break;
+            case 5: deleteEnd();
+            break;
+            case 6: printf(&quot;Enter position: &quot;);
+            scanf(&quot;%d&quot;,&amp;pos);
+            deletePos(pos);
+            break;
+            case 7: printf(isEmpty()?&quot;List is empty\n&quot;:&quot;List is not empty\n&quot;);
+            break;
+            case 8: printf(isFull()?&quot;Memory allocation unavailable\n&quot;:&quot;Memory available\n&quot;);
+            break;
+            case 9: display();
+            break;
+            case 10: printf(&quot;Enter value to search: &quot;);
+            scanf(&quot;%99s&quot;,value);
+            found=search(value);
+            if(found&lt;0) printf(&quot;Value not found\n&quot;);
+            else printf(&quot;Value found at position %d\n&quot;,found);
+            break;
+            case 0: break;
+            default: printf(&quot;Invalid choice\n&quot;);
+        }
+    }
+    while(choice!=0);
+    return 0;
+}
+</pre>
+<b>OUTPUT:-</b><br>
+Enter choice: 1
+Enter value: Hello
+Enter choice: 9
+Hello 
+Enter choice: 0
+<br>
+<hr>
+<br>
+<b>QUESTION 8:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF DOUBLY CIRCULAR LINKED LIST STORING STRING VALUES (INSERT AT BEGIN, INSERT AT POS, INSERT AT END, DELETE AT BEGIN, DELETE AT END, DELETE AT POS, ISEMPTY, ISFULL, DISPLAY, SEARCH)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#define CIRCULAR 1
+#define DOUBLY 1
+struct Node {
+    char data[100];
+    struct Node *prev;
+    struct Node *next;
+};
+struct Node *head=NULL;
+struct Node *newNode(char value[100]) {
+    struct Node *n=(struct Node*)malloc(sizeof(struct Node));
+    if(!n) {
+        printf(&quot;Memory allocation failed\n&quot;);
+        exit(1);
+    }
+    strcpy(n-&gt;data,value);
+    n-&gt;prev=NULL;
+    n-&gt;next=NULL;
+    return n;
+}
+void linearize(void) {
+    struct Node *p;
+    if(CIRCULAR &amp;&amp; head) {
+        p=head;
+        while(p-&gt;next!=head) p=p-&gt;next;
+        p-&gt;next=NULL;
+    }
+}
+void repair(void) {
+    struct Node *p=head,*prev=NULL;
+    while(p) {
+        if(DOUBLY) p-&gt;prev=prev;
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(CIRCULAR &amp;&amp; head) {
+        prev-&gt;next=head;
+        if(DOUBLY) head-&gt;prev=prev;
+    }
+}
+int isEmpty(void) {
+    return head==NULL;
+}
+int isFull(void) {
+    struct Node *p=(struct Node*)malloc(sizeof(struct Node));
+    if(!p) return 1;
+    free(p);
+    return 0;
+}
+void insertBegin(char value[100]) {
+    struct Node *n=newNode(value);
+    linearize();
+    n-&gt;next=head;
+    head=n;
+    repair();
+}
+void insertEnd(char value[100]) {
+    struct Node *n=newNode(value),*p;
+    linearize();
+    if(!head) head=n;
+    else {
+        p=head;
+        while(p-&gt;next) p=p-&gt;next;
+        p-&gt;next=n;
+    }
+    repair();
+}
+void insertPos(char value[100],int pos) {
+    int i;
+    struct Node *p,*n;
+    if(pos&lt;=1 || !head) {
+        insertBegin(value);
+        return;
+    }
+    linearize();
+    p=head;
+    for(i=1;i&lt;pos-1 &amp;&amp; p-&gt;next;i++) p=p-&gt;next;
+    n=newNode(value);
+    n-&gt;next=p-&gt;next;
+    p-&gt;next=n;
+    repair();
+}
+void deleteBegin(void) {
+    struct Node *p;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    p=head;
+    head=head-&gt;next;
+    free(p);
+    repair();
+}
+void deleteEnd(void) {
+    struct Node *p,*prev=NULL;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    p=head;
+    while(p-&gt;next) {
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(prev) prev-&gt;next=NULL;
+    else head=NULL;
+    free(p);
+    repair();
+}
+void deletePos(int pos) {
+    int i;
+    struct Node *p,*prev=NULL;
+    linearize();
+    if(!head) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    if(pos&lt;=1) {
+        p=head;
+        head=head-&gt;next;
+        free(p);
+        repair();
+        return;
+    }
+    p=head;
+    for(i=1;i&lt;pos &amp;&amp; p;i++) {
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(!p) {
+        printf(&quot;Invalid position\n&quot;);
+        repair();
+        return;
+    }
+    prev-&gt;next=p-&gt;next;
+    free(p);
+    repair();
+}
+void display(void) {
+    struct Node *p=head;
+    if(!p) {
+        printf(&quot;List is empty\n&quot;);
+        return;
+    }
+    do {
+        printf(&quot;%s &quot;,p-&gt;data);
+        p=p-&gt;next;
+    }
+    while(p &amp;&amp; (!CIRCULAR || p!=head));
+    printf(&quot;\n&quot;);
+}
+int search(char value[100]) {
+    int pos=1;
+    struct Node *p=head;
+    if(!p) return -1;
+    do {
+        if(strcmp(p-&gt;data,value)==0) return pos;
+        p=p-&gt;next;
+        pos++;
+    }
+    while(p &amp;&amp; (!CIRCULAR || p!=head));
+    return -1;
+}
+int main(void) {
+    int choice,pos,found;
+    char value[100];
+    do {
+        printf(&quot;\n1.Insert at begin\n2.Insert at position\n3.Insert at end\n4.Delete at begin\n5.Delete at end\n6.Delete at position\n7.IsEmpty\n8.IsFull\n9.Display\n10.Search\n0.Exit\nEnter choice: &quot;);
+        if(scanf(&quot;%d&quot;,&amp;choice)!=1) break;
+        switch(choice) {
+            case 1: printf(&quot;Enter value: &quot;);
+            scanf(&quot;%99s&quot;,value);
+            insertBegin(value);
+            break;
+            case 2: printf(&quot;Enter value and position: &quot;);
+            scanf(&quot;%99s %d&quot;,value,&amp;pos);
+            insertPos(value,pos);
+            break;
+            case 3: printf(&quot;Enter value: &quot;);
+            scanf(&quot;%99s&quot;,value);
+            insertEnd(value);
+            break;
+            case 4: deleteBegin();
+            break;
+            case 5: deleteEnd();
+            break;
+            case 6: printf(&quot;Enter position: &quot;);
+            scanf(&quot;%d&quot;,&amp;pos);
+            deletePos(pos);
+            break;
+            case 7: printf(isEmpty()?&quot;List is empty\n&quot;:&quot;List is not empty\n&quot;);
+            break;
+            case 8: printf(isFull()?&quot;Memory allocation unavailable\n&quot;:&quot;Memory available\n&quot;);
+            break;
+            case 9: display();
+            break;
+            case 10: printf(&quot;Enter value to search: &quot;);
+            scanf(&quot;%99s&quot;,value);
+            found=search(value);
+            if(found&lt;0) printf(&quot;Value not found\n&quot;);
+            else printf(&quot;Value found at position %d\n&quot;,found);
+            break;
+            case 0: break;
+            default: printf(&quot;Invalid choice\n&quot;);
+        }
+    }
+    while(choice!=0);
+    return 0;
+}
+</pre>
+<b>OUTPUT:-</b><br>
+Enter choice: 1
+Enter value: Hello
+Enter choice: 9
+Hello 
+Enter choice: 0
+<br>
+<hr>
+<br>
+<b>QUESTION 9:-</b><br>
+<p>ENTER THE 2 POLYNOMIAL EQUATIONS DYNAMICALLY, ADD THEM AND DISPLAY THE ANSWER.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+struct Term {
+    int coeff, exp;
+    struct Term *next;
+};
+struct Term *createTerm(int c,int e) {
+    struct Term *n=(struct Term*)malloc(sizeof(struct Term));
+    if(!n) exit(1);
+    n-&gt;coeff=c;
+    n-&gt;exp=e;
+    n-&gt;next=NULL;
+    return n;
+}
+void insertTerm(struct Term **head,int c,int e) {
+    struct Term *p=*head,*prev=NULL;
+    while(p &amp;&amp; p-&gt;exp&gt;e) {
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(p &amp;&amp; p-&gt;exp==e) {
+        p-&gt;coeff+=c;
+        return;
+    }
+    {
+        struct Term *n=createTerm(c,e);
+        n-&gt;next=p;
+        if(prev) prev-&gt;next=n;
+        else *head=n;
+    }
+}
+void readPoly(struct Term **p) {
+    int n,i,c,e;
+    printf(&quot;Enter number of terms: &quot;);
+    scanf(&quot;%d&quot;,&amp;n);
+    for(i=0;i&lt;n;i++) {
+        printf(&quot;Enter coefficient and exponent: &quot;);
+        scanf(&quot;%d%d&quot;,&amp;c,&amp;e);
+        insertTerm(p,c,e);
+    }
+}
+void display(struct Term *p) {
+    int first=1;
+    if(!p) {
+        printf(&quot;0&quot;);
+        return;
+    }
+    while(p) {
+        if(p-&gt;coeff) {
+            if(!first &amp;&amp; p-&gt;coeff&gt;0) printf(&quot; + &quot;);
+            if(p-&gt;coeff&lt;0) printf(&quot; - &quot;);
+            printf(&quot;%d&quot;,abs(p-&gt;coeff));
+            if(p-&gt;exp&gt;0) printf(&quot;x&quot;);
+            if(p-&gt;exp&gt;1) printf(&quot;^%d&quot;,p-&gt;exp);
+            first=0;
+        }
+        p=p-&gt;next;
+    }
+    if(first) printf(&quot;0&quot;);
+}
+int main(void) {
+    struct Term *a=NULL,*b=NULL,*r=NULL,*p;
+    printf(&quot;First polynomial\\n&quot;);
+    readPoly(&amp;a);
+    printf(&quot;Second polynomial\\n&quot;);
+    readPoly(&amp;b);
+    for(p=a;p;p=p-&gt;next) insertTerm(&amp;r,p-&gt;coeff,p-&gt;exp);
+    for(p=b;p;p=p-&gt;next) insertTerm(&amp;r,1*p-&gt;coeff,p-&gt;exp);
+    printf(&quot;Result: &quot;);
+    display(r);
+    printf(&quot;\\n&quot;);
+    return 0;
+}
+</pre>
+<b>OUTPUT:-</b><br>
+First polynomial
+Enter number of terms: 2
+Enter coefficient and exponent: 3 2
+Enter coefficient and exponent: 2 0
+Second polynomial
+Enter number of terms: 2
+Enter coefficient and exponent: 1 1
+Enter coefficient and exponent: 4 0
+Result: 3x^2 + x + 6
+<br>
+<hr>
+<br>
+<b>QUESTION 10:-</b><br>
+<p>ENTER THE 2 POLYNOMIAL EQUATIONS DYNAMICALLY, SUBTRACT THEM AND DISPLAY THE ANSWER.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+struct Term {
+    int coeff, exp;
+    struct Term *next;
+};
+struct Term *createTerm(int c,int e) {
+    struct Term *n=(struct Term*)malloc(sizeof(struct Term));
+    if(!n) exit(1);
+    n-&gt;coeff=c;
+    n-&gt;exp=e;
+    n-&gt;next=NULL;
+    return n;
+}
+void insertTerm(struct Term **head,int c,int e) {
+    struct Term *p=*head,*prev=NULL;
+    while(p &amp;&amp; p-&gt;exp&gt;e) {
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(p &amp;&amp; p-&gt;exp==e) {
+        p-&gt;coeff+=c;
+        return;
+    }
+    {
+        struct Term *n=createTerm(c,e);
+        n-&gt;next=p;
+        if(prev) prev-&gt;next=n;
+        else *head=n;
+    }
+}
+void readPoly(struct Term **p) {
+    int n,i,c,e;
+    printf(&quot;Enter number of terms: &quot;);
+    scanf(&quot;%d&quot;,&amp;n);
+    for(i=0;i&lt;n;i++) {
+        printf(&quot;Enter coefficient and exponent: &quot;);
+        scanf(&quot;%d%d&quot;,&amp;c,&amp;e);
+        insertTerm(p,c,e);
+    }
+}
+void display(struct Term *p) {
+    int first=1;
+    if(!p) {
+        printf(&quot;0&quot;);
+        return;
+    }
+    while(p) {
+        if(p-&gt;coeff) {
+            if(!first &amp;&amp; p-&gt;coeff&gt;0) printf(&quot; + &quot;);
+            if(p-&gt;coeff&lt;0) printf(&quot; - &quot;);
+            printf(&quot;%d&quot;,abs(p-&gt;coeff));
+            if(p-&gt;exp&gt;0) printf(&quot;x&quot;);
+            if(p-&gt;exp&gt;1) printf(&quot;^%d&quot;,p-&gt;exp);
+            first=0;
+        }
+        p=p-&gt;next;
+    }
+    if(first) printf(&quot;0&quot;);
+}
+int main(void) {
+    struct Term *a=NULL,*b=NULL,*r=NULL,*p;
+    printf(&quot;First polynomial\\n&quot;);
+    readPoly(&amp;a);
+    printf(&quot;Second polynomial\\n&quot;);
+    readPoly(&amp;b);
+    for(p=a;p;p=p-&gt;next) insertTerm(&amp;r,p-&gt;coeff,p-&gt;exp);
+    for(p=b;p;p=p-&gt;next) insertTerm(&amp;r,-1*p-&gt;coeff,p-&gt;exp);
+    printf(&quot;Result: &quot;);
+    display(r);
+    printf(&quot;\\n&quot;);
+    return 0;
+}
+</pre>
+<b>OUTPUT:-</b><br>
+First polynomial
+Enter number of terms: 2
+Enter coefficient and exponent: 3 2
+Enter coefficient and exponent: 2 0
+Second polynomial
+Enter number of terms: 2
+Enter coefficient and exponent: 1 1
+Enter coefficient and exponent: 4 0
+Result: 3x^2 - x - 2
+<br>
+<hr>
+<br>
+<b>QUESTION 11:-</b><br>
+<p>ENTER THE 2 POLYNOMIAL EQUATIONS DYNAMICALLY, MULTIPLY THEM AND DISPLAY THE ANSWER.</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+struct Term {
+    int coeff, exp;
+    struct Term *next;
+};
+struct Term *createTerm(int c,int e) {
+    struct Term *n=(struct Term*)malloc(sizeof(struct Term));
+    if(!n) exit(1);
+    n-&gt;coeff=c;
+    n-&gt;exp=e;
+    n-&gt;next=NULL;
+    return n;
+}
+void insertTerm(struct Term **head,int c,int e) {
+    struct Term *p=*head,*prev=NULL;
+    while(p &amp;&amp; p-&gt;exp&gt;e) {
+        prev=p;
+        p=p-&gt;next;
+    }
+    if(p &amp;&amp; p-&gt;exp==e) {
+        p-&gt;coeff+=c;
+        return;
+    }
+    {
+        struct Term *n=createTerm(c,e);
+        n-&gt;next=p;
+        if(prev) prev-&gt;next=n;
+        else *head=n;
+    }
+}
+void readPoly(struct Term **p) {
+    int n,i,c,e;
+    printf(&quot;Enter number of terms: &quot;);
+    scanf(&quot;%d&quot;,&amp;n);
+    for(i=0;i&lt;n;i++) {
+        printf(&quot;Enter coefficient and exponent: &quot;);
+        scanf(&quot;%d%d&quot;,&amp;c,&amp;e);
+        insertTerm(p,c,e);
+    }
+}
+void display(struct Term *p) {
+    int first=1;
+    if(!p) {
+        printf(&quot;0&quot;);
+        return;
+    }
+    while(p) {
+        if(p-&gt;coeff) {
+            if(!first &amp;&amp; p-&gt;coeff&gt;0) printf(&quot; + &quot;);
+            if(p-&gt;coeff&lt;0) printf(&quot; - &quot;);
+            printf(&quot;%d&quot;,abs(p-&gt;coeff));
+            if(p-&gt;exp&gt;0) printf(&quot;x&quot;);
+            if(p-&gt;exp&gt;1) printf(&quot;^%d&quot;,p-&gt;exp);
+            first=0;
+        }
+        p=p-&gt;next;
+    }
+    if(first) printf(&quot;0&quot;);
+}
+int main(void) {
+    struct Term *a=NULL,*b=NULL,*r=NULL,*p,*q;
+    printf(&quot;First polynomial\\n&quot;);
+    readPoly(&amp;a);
+    printf(&quot;Second polynomial\\n&quot;);
+    readPoly(&amp;b);
+    for(p=a;p;p=p-&gt;next) for(q=b;q;q=q-&gt;next) insertTerm(&amp;r,p-&gt;coeff*q-&gt;coeff,p-&gt;exp+q-&gt;exp);
+    printf(&quot;Result: &quot;);
+    display(r);
+    printf(&quot;\\n&quot;);
+    return 0;
+}
+</pre>
+<b>OUTPUT:-</b><br>
+First polynomial
+Enter number of terms: 2
+Enter coefficient and exponent: 1 1
+Enter coefficient and exponent: 2 0
+Second polynomial
+Enter number of terms: 2
+Enter coefficient and exponent: 1 1
+Enter coefficient and exponent: 3 0
+Result: x^2 + 5x + 6
+<br>
+<hr>
+<br>
+</body>
+</html>

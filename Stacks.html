@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>STACK PROGRAMS</title>
+</head>
+<body>
+<b>QUESTION 1:-</b><br>
+<p>CREATE A STACK IMPLEMENTING THE OPERATIONS ON AN INTEGER ARRAY (PUSH, POP, PEEK, ISEMPTY, ISFULL)</p><br>
+<b>ANSWER:-</b><br>
+<pre>
+#include &lt;stdio.h&gt;
+#define MAX 5
+
+int stack[MAX], top = -1;
+
+void push(int value) {
+    if(top == MAX - 1)
+        printf(&quot;Stack is full.\n&quot;);
+    else {
+        top++;
+        stack[top] = value;
+        printf(&quot;%d pushed into stack.\n&quot;, value);
+    }
+}
+
+void pop() {
+    if(top == -1)
+        printf(&quot;Stack is empty.\n&quot;);
+    else {
+        printf(&quot;Popped element: %d\n&quot;, stack[top]);
+        top--;
+    }
+}
+
+void peek() {
+    if(top == -1)
+        printf(&quot;Stack is empty.\n&quot;);
+    else
+        printf(&quot;Top element: %d\n&quot;, stack[top]);
+}
+
+int isEmpty() {
+    return top == -1;
+}
+
+int isFull() {
+    return top == MAX - 1;
+}
+
+int main() {
+    int choice, value;
+
+    do {
+        printf(&quot;\n1. PUSH\n2. POP\n3. PEEK\n4. ISEMPTY\n5. ISFULL\n6. EXIT\n&quot;);
+        printf(&quot;Enter your choice: &quot;);
+        scanf(&quot;%d&quot;, &amp;choice);
+
+        switch(choice) {
+            case 1:
+                printf(&quot;Enter value: &quot;);
+                scanf(&quot;%d&quot;, &amp;value);
+                push(value);
+                break;
+            case 2:
+                pop();
+                break;
+            case 3:
+                peek();
+                break;
+            case 4:
+                if(isEmpty())
+                    printf(&quot;Stack is empty.\n&quot;);
+                else
+                    printf(&quot;Stack is not empty.\n&quot;);
+                break;
+            case 5:
+                if(isFull())
+                    printf(&quot;Stack is full.\n&quot;);
+                else
+                    printf(&quot;Stack is not full.\n&quot;);
+                break;
+            case 6:
+                printf(&quot;Program ended.\n&quot;);
+                break;
+            default:
+                printf(&quot;Invalid choice.\n&quot;);
+        }
+    } while(choice != 6);
+
+    return 0;
+}
+</pre><br>
+<b>OUTPUT:-</b><br>
+1. PUSH<br>
+2. POP<br>
+3. PEEK<br>
+4. ISEMPTY<br>
+5. ISFULL<br>
+6. EXIT<br>
+Enter your choice: 1<br>
+Enter value: 10<br>
+10 pushed into stack.<br>
+Enter your choice: 3<br>
+Top element: 10<br>
+Enter your choice: 6<br>
+Program ended.
+<hr>
+<b>QUESTION 2:-</b><br>
+<p>CREATE A STACK IMPLEMENTING THE OPERATIONS ON THE CHARACTERS ARRAY (PUSH, POP, PEEK, ISEMPTY, ISFULL)</p><br>
+<b>ANSWER:-</b><br>
+<pre>
+#include &lt;stdio.h&gt;
+#define MAX 5
+
+char stack[MAX];
+int top = -1;
+
+void push(char value) {
+    if(top == MAX - 1)
+        printf(&quot;Stack is full.\n&quot;);
+    else {
+        stack[++top] = value;
+        printf(&quot;%c pushed into stack.\n&quot;, value);
+    }
+}
+
+void pop() {
+    if(top == -1)
+        printf(&quot;Stack is empty.\n&quot;);
+    else
+        printf(&quot;Popped character: %c\n&quot;, stack[top--]);
+}
+
+void peek() {
+    if(top == -1)
+        printf(&quot;Stack is empty.\n&quot;);
+    else
+        printf(&quot;Top character: %c\n&quot;, stack[top]);
+}
+
+int isEmpty() {
+    return top == -1;
+}
+
+int isFull() {
+    return top == MAX - 1;
+}
+
+int main() {
+    int choice;
+    char value;
+
+    do {
+        printf(&quot;\n1. PUSH\n2. POP\n3. PEEK\n4. ISEMPTY\n5. ISFULL\n6. EXIT\n&quot;);
+        printf(&quot;Enter your choice: &quot;);
+        scanf(&quot;%d&quot;, &amp;choice);
+
+        switch(choice) {
+            case 1:
+                printf(&quot;Enter character: &quot;);
+                scanf(&quot; %c&quot;, &amp;value);
+                push(value);
+                break;
+            case 2:
+                pop();
+                break;
+            case 3:
+                peek();
+                break;
+            case 4:
+                if(isEmpty())
+                    printf(&quot;Stack is empty.\n&quot;);
+                else
+                    printf(&quot;Stack is not empty.\n&quot;);
+                break;
+            case 5:
+                if(isFull())
+                    printf(&quot;Stack is full.\n&quot;);
+                else
+                    printf(&quot;Stack is not full.\n&quot;);
+                break;
+            case 6:
+                printf(&quot;Program ended.\n&quot;);
+                break;
+            default:
+                printf(&quot;Invalid choice.\n&quot;);
+        }
+    } while(choice != 6);
+
+    return 0;
+}
+</pre><br>
+<b>OUTPUT:-</b><br>
+1. PUSH<br>
+2. POP<br>
+3. PEEK<br>
+4. ISEMPTY<br>
+5. ISFULL<br>
+6. EXIT<br>
+Enter your choice: 1<br>
+Enter character: A<br>
+A pushed into stack.<br>
+Enter your choice: 3<br>
+Top character: A<br>
+Enter your choice: 6<br>
+Program ended.
+<hr>
+<b>QUESTION 3:-</b><br>
+<p>CREATE A STACK IMPLEMENTING THE OPERATIONS ON THE INTEGER NODES (DYNAMICALLY) (PUSH, POP, PEEK, ISEMPTY, ISFULL)</p><br>
+<b>ANSWER:-</b><br>
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+struct node {
+    int data;
+    struct node *next;
+};
+
+struct node *top = NULL;
+
+void push(int value) {
+    struct node *newnode;
+    newnode = (struct node *)malloc(sizeof(struct node));
+
+    if(newnode == NULL) {
+        printf(&quot;Memory is full.\n&quot;);
+        return;
+    }
+
+    newnode-&gt;data = value;
+    newnode-&gt;next = top;
+    top = newnode;
+    printf(&quot;%d pushed into stack.\n&quot;, value);
+}
+
+void pop() {
+    struct node *temp;
+
+    if(top == NULL)
+        printf(&quot;Stack is empty.\n&quot;);
+    else {
+        temp = top;
+        printf(&quot;Popped element: %d\n&quot;, temp-&gt;data);
+        top = top-&gt;next;
+        free(temp);
+    }
+}
+
+void peek() {
+    if(top == NULL)
+        printf(&quot;Stack is empty.\n&quot;);
+    else
+        printf(&quot;Top element: %d\n&quot;, top-&gt;data);
+}
+
+int isEmpty() {
+    return top == NULL;
+}
+
+int isFull() {
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    if(temp == NULL)
+        return 1;
+    free(temp);
+    return 0;
+}
+
+int main() {
+    int choice, value;
+
+    do {
+        printf(&quot;\n1. PUSH\n2. POP\n3. PEEK\n4. ISEMPTY\n5. ISFULL\n6. EXIT\n&quot;);
+        printf(&quot;Enter your choice: &quot;);
+        scanf(&quot;%d&quot;, &amp;choice);
+
+        switch(choice) {
+            case 1:
+                printf(&quot;Enter value: &quot;);
+                scanf(&quot;%d&quot;, &amp;value);
+                push(value);
+                break;
+            case 2:
+                pop();
+                break;
+            case 3:
+                peek();
+                break;
+            case 4:
+                if(isEmpty())
+                    printf(&quot;Stack is empty.\n&quot;);
+                else
+                    printf(&quot;Stack is not empty.\n&quot;);
+                break;
+            case 5:
+                if(isFull())
+                    printf(&quot;Memory is full.\n&quot;);
+                else
+                    printf(&quot;Memory is available.\n&quot;);
+                break;
+            case 6:
+                printf(&quot;Program ended.\n&quot;);
+                break;
+            default:
+                printf(&quot;Invalid choice.\n&quot;);
+        }
+    } while(choice != 6);
+
+    while(top != NULL)
+        pop();
+
+    return 0;
+}
+</pre><br>
+<b>OUTPUT:-</b><br>
+1. PUSH<br>
+2. POP<br>
+3. PEEK<br>
+4. ISEMPTY<br>
+5. ISFULL<br>
+6. EXIT<br>
+Enter your choice: 1<br>
+Enter value: 25<br>
+25 pushed into stack.<br>
+Enter your choice: 3<br>
+Top element: 25<br>
+Enter your choice: 6<br>
+Program ended.
+<hr>
+<b>QUESTION 4:-</b><br>
+<p>CREATE A STACK IMPLEMENTING THE OPERATIONS ON THE CHARACTERS NODES (DYNAMICALLY) (PUSH, POP, PEEK, ISEMPTY, ISFULL)</p><br>
+<b>ANSWER:-</b><br>
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+struct node {
+    char data;
+    struct node *next;
+};
+
+struct node *top = NULL;
+
+void push(char value) {
+    struct node *newnode;
+    newnode = (struct node *)malloc(sizeof(struct node));
+
+    if(newnode == NULL) {
+        printf(&quot;Memory is full.\n&quot;);
+        return;
+    }
+
+    newnode-&gt;data = value;
+    newnode-&gt;next = top;
+    top = newnode;
+    printf(&quot;%c pushed into stack.\n&quot;, value);
+}
+
+void pop() {
+    struct node *temp;
+
+    if(top == NULL)
+        printf(&quot;Stack is empty.\n&quot;);
+    else {
+        temp = top;
+        printf(&quot;Popped character: %c\n&quot;, temp-&gt;data);
+        top = top-&gt;next;
+        free(temp);
+    }
+}
+
+void peek() {
+    if(top == NULL)
+        printf(&quot;Stack is empty.\n&quot;);
+    else
+        printf(&quot;Top character: %c\n&quot;, top-&gt;data);
+}
+
+int isEmpty() {
+    return top == NULL;
+}
+
+int isFull() {
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    if(temp == NULL)
+        return 1;
+    free(temp);
+    return 0;
+}
+
+int main() {
+    int choice;
+    char value;
+
+    do {
+        printf(&quot;\n1. PUSH\n2. POP\n3. PEEK\n4. ISEMPTY\n5. ISFULL\n6. EXIT\n&quot;);
+        printf(&quot;Enter your choice: &quot;);
+        scanf(&quot;%d&quot;, &amp;choice);
+
+        switch(choice) {
+            case 1:
+                printf(&quot;Enter character: &quot;);
+                scanf(&quot; %c&quot;, &amp;value);
+                push(value);
+                break;
+            case 2:
+                pop();
+                break;
+            case 3:
+                peek();
+                break;
+            case 4:
+                if(isEmpty())
+                    printf(&quot;Stack is empty.\n&quot;);
+                else
+                    printf(&quot;Stack is not empty.\n&quot;);
+                break;
+            case 5:
+                if(isFull())
+                    printf(&quot;Memory is full.\n&quot;);
+                else
+                    printf(&quot;Memory is available.\n&quot;);
+                break;
+            case 6:
+                printf(&quot;Program ended.\n&quot;);
+                break;
+            default:
+                printf(&quot;Invalid choice.\n&quot;);
+        }
+    } while(choice != 6);
+
+    while(top != NULL)
+        pop();
+
+    return 0;
+}
+</pre><br>
+<b>OUTPUT:-</b><br>
+1. PUSH<br>
+2. POP<br>
+3. PEEK<br>
+4. ISEMPTY<br>
+5. ISFULL<br>
+6. EXIT<br>
+Enter your choice: 1<br>
+Enter character: A<br>
+A pushed into stack.<br>
+Enter your choice: 3<br>
+Top character: A<br>
+Enter your choice: 6<br>
+Program ended.
+<hr>
+<b>QUESTION 5:-</b><br>
+<p>ENTER THE STRING FROM THE USER AND REVERSE THE STRING USING STACKS.</p><br>
+<b>ANSWER:-</b><br>
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#define MAX 100
+
+int main() {
+    char str[MAX], stack[MAX];
+    int top = -1, i;
+
+    printf(&quot;Enter a string: &quot;);
+    fgets(str, MAX, stdin);
+    str[strcspn(str, &quot;\n&quot;)] = &#x27;\0&#x27;;
+
+    for(i = 0; str[i] != &#x27;\0&#x27;; i++)
+        stack[++top] = str[i];
+
+    printf(&quot;Reversed string: &quot;);
+    while(top != -1)
+        printf(&quot;%c&quot;, stack[top--]);
+
+    printf(&quot;\n&quot;);
+    return 0;
+}
+</pre><br>
+<b>OUTPUT:-</b><br>
+Enter a string: HELLO<br>
+Reversed string: OLLEH
+<hr>
+<b>QUESTION 6:-</b><br>
+<p>CREATE THE PROGRAM TO MATCH THE SINGLE BRACKET USING STACKS.</p><br>
+<b>ANSWER:-</b><br>
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#define MAX 100
+
+int main() {
+    char str[MAX], stack[MAX];
+    int top = -1, i, valid = 1;
+
+    printf(&quot;Enter an expression: &quot;);
+    fgets(str, MAX, stdin);
+
+    for(i = 0; str[i] != &#x27;\0&#x27;; i++) {
+        if(str[i] == &#x27;(&#x27; || str[i] == &#x27;[&#x27; || str[i] == &#x27;{&#x27;)
+            stack[++top] = str[i];
+        else if(str[i] == &#x27;)&#x27; || str[i] == &#x27;]&#x27; || str[i] == &#x27;}&#x27;) {
+            if(top == -1) {
+                valid = 0;
+                break;
+            }
+
+            if((str[i] == &#x27;)&#x27; &amp;&amp; stack[top] == &#x27;(&#x27;) ||
+               (str[i] == &#x27;]&#x27; &amp;&amp; stack[top] == &#x27;[&#x27;) ||
+               (str[i] == &#x27;}&#x27; &amp;&amp; stack[top] == &#x27;{&#x27;))
+                top--;
+            else {
+                valid = 0;
+                break;
+            }
+        }
+    }
+
+    if(top != -1)
+        valid = 0;
+
+    if(valid)
+        printf(&quot;Brackets are balanced.\n&quot;);
+    else
+        printf(&quot;Brackets are not balanced.\n&quot;);
+
+    return 0;
+}
+</pre><br>
+<b>OUTPUT:-</b><br>
+Enter an expression: (A+B)*[C-D]<br>
+Brackets are balanced.
+<hr>
+<b>QUESTION 7:-</b><br>
+<p>CREATE TWO INTEGER STACKS IN A SINGLE ARRAY.</p><br>
+<b>ANSWER:-</b><br>
+<pre>
+#include &lt;stdio.h&gt;
+#define MAX 10
+
+int stack[MAX];
+int top1 = -1, top2 = MAX;
+
+void push1(int value) {
+    if(top1 + 1 == top2)
+        printf(&quot;Stack is full.\n&quot;);
+    else {
+        stack[++top1] = value;
+        printf(&quot;%d pushed into Stack 1.\n&quot;, value);
+    }
+}
+
+void push2(int value) {
+    if(top1 + 1 == top2)
+        printf(&quot;Stack is full.\n&quot;);
+    else {
+        stack[--top2] = value;
+        printf(&quot;%d pushed into Stack 2.\n&quot;, value);
+    }
+}
+
+void pop1() {
+    if(top1 == -1)
+        printf(&quot;Stack 1 is empty.\n&quot;);
+    else
+        printf(&quot;Popped from Stack 1: %d\n&quot;, stack[top1--]);
+}
+
+void pop2() {
+    if(top2 == MAX)
+        printf(&quot;Stack 2 is empty.\n&quot;);
+    else
+        printf(&quot;Popped from Stack 2: %d\n&quot;, stack[top2++]);
+}
+
+int main() {
+    int choice, value;
+
+    do {
+        printf(&quot;\n1. Push Stack 1\n2. Pop Stack 1\n3. Push Stack 2\n4. Pop Stack 2\n5. Exit\n&quot;);
+        printf(&quot;Enter your choice: &quot;);
+        scanf(&quot;%d&quot;, &amp;choice);
+
+        switch(choice) {
+            case 1:
+                printf(&quot;Enter value: &quot;);
+                scanf(&quot;%d&quot;, &amp;value);
+                push1(value);
+                break;
+            case 2:
+                pop1();
+                break;
+            case 3:
+                printf(&quot;Enter value: &quot;);
+                scanf(&quot;%d&quot;, &amp;value);
+                push2(value);
+                break;
+            case 4:
+                pop2();
+                break;
+            case 5:
+                printf(&quot;Program ended.\n&quot;);
+                break;
+            default:
+                printf(&quot;Invalid choice.\n&quot;);
+        }
+    } while(choice != 5);
+
+    return 0;
+}
+</pre><br>
+<b>OUTPUT:-</b><br>
+1. Push Stack 1<br>
+2. Pop Stack 1<br>
+3. Push Stack 2<br>
+4. Pop Stack 2<br>
+5. Exit<br>
+Enter your choice: 1<br>
+Enter value: 10<br>
+10 pushed into Stack 1.<br>
+Enter your choice: 3<br>
+Enter value: 20<br>
+20 pushed into Stack 2.<br>
+Enter your choice: 5<br>
+Program ended.
+<hr>
+<b>QUESTION 8:-</b><br>
+<p>SORT THE STACK IN ASCENDING ORDER USING INTEGER ARRAY.</p><br>
+<b>ANSWER:-</b><br>
+<pre>
+#include &lt;stdio.h&gt;
+#define MAX 100
+
+int main() {
+    int stack[MAX], tempStack[MAX];
+    int top = -1, tempTop = -1;
+    int n, i, value;
+
+    printf(&quot;Enter number of elements: &quot;);
+    scanf(&quot;%d&quot;, &amp;n);
+
+    if(n &lt; 1 || n &gt; MAX) {
+        printf(&quot;Invalid size.\n&quot;);
+        return 0;
+    }
+
+    for(i = 0; i &lt; n; i++) {
+        printf(&quot;Enter element: &quot;);
+        scanf(&quot;%d&quot;, &amp;stack[++top]);
+    }
+
+    while(top != -1) {
+        value = stack[top--];
+
+        while(tempTop != -1 &amp;&amp; tempStack[tempTop] &lt; value)
+            stack[++top] = tempStack[tempTop--];
+
+        tempStack[++tempTop] = value;
+    }
+
+    while(tempTop != -1)
+        stack[++top] = tempStack[tempTop--];
+
+    printf(&quot;Stack in ascending order (bottom to top): &quot;);
+    for(i = 0; i &lt;= top; i++)
+        printf(&quot;%d &quot;, stack[i]);
+
+    printf(&quot;\n&quot;);
+    return 0;
+}
+</pre><br>
+<b>OUTPUT:-</b><br>
+Enter number of elements: 5<br>
+Enter element: 4<br>
+Enter element: 1<br>
+Enter element: 3<br>
+Enter element: 5<br>
+Enter element: 2<br>
+Stack in ascending order (bottom to top): 1 2 3 4 5
+<hr>
+<b>QUESTION 9:-</b><br>
+<p>ENTER THE INFIX EXPRESSION FROM USER AND CONVERT INTO PREFIX EXPRESSION.</p><br>
+<b>ANSWER:-</b><br>
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;ctype.h&gt;
+#define MAX 100
+
+int precedence(char ch) {
+    if(ch == &#x27;^&#x27;) return 3;
+    if(ch == &#x27;*&#x27; || ch == &#x27;/&#x27;) return 2;
+    if(ch == &#x27;+&#x27; || ch == &#x27;-&#x27;) return 1;
+    return 0;
+}
+
+int main() {
+    char infix[MAX], stack[MAX], prefix[MAX], temp;
+    int top = -1, i, j = 0;
+
+    printf(&quot;Enter infix expression: &quot;);
+    scanf(&quot;%99s&quot;, infix);
+
+    for(i = 0; infix[i] != &#x27;\0&#x27;; i++) {
+        if(infix[i] == &#x27;(&#x27;) infix[i] = &#x27;)&#x27;;
+        else if(infix[i] == &#x27;)&#x27;) infix[i] = &#x27;(&#x27;;
+    }
+
+    for(i = 0, j = (int)strlen(infix) - 1; i &lt; j; i++, j--) {
+        temp = infix[i];
+        infix[i] = infix[j];
+        infix[j] = temp;
+    }
+
+    j = 0;
+    for(i = 0; infix[i] != &#x27;\0&#x27;; i++) {
+        if(isalnum((unsigned char)infix[i]))
+            prefix[j++] = infix[i];
+        else if(infix[i] == &#x27;(&#x27;)
+            stack[++top] = infix[i];
+        else if(infix[i] == &#x27;)&#x27;) {
+            while(top != -1 &amp;&amp; stack[top] != &#x27;(&#x27;)
+                prefix[j++] = stack[top--];
+            if(top != -1) top--;
+        }
+        else {
+            while(top != -1 &amp;&amp; stack[top] != &#x27;(&#x27; &amp;&amp;
+                  (precedence(stack[top]) &gt; precedence(infix[i]) ||
+                  (precedence(stack[top]) == precedence(infix[i]) &amp;&amp; infix[i] == &#x27;^&#x27;)))
+                prefix[j++] = stack[top--];
+            stack[++top] = infix[i];
+        }
+    }
+
+    while(top != -1)
+        prefix[j++] = stack[top--];
+
+    prefix[j] = &#x27;\0&#x27;;
+
+    for(i = 0, j = (int)strlen(prefix) - 1; i &lt; j; i++, j--) {
+        temp = prefix[i];
+        prefix[i] = prefix[j];
+        prefix[j] = temp;
+    }
+
+    printf(&quot;Prefix expression: %s\n&quot;, prefix);
+    return 0;
+}
+</pre><br>
+<b>OUTPUT:-</b><br>
+Enter infix expression: A+B*C<br>
+Prefix expression: +A*BC
+<hr>
+<b>QUESTION 10:-</b><br>
+<p>ENTER THE INFIX EXPRESSION FROM USER AND CONVERT INTO POSTFIX EXPRESSION.</p><br>
+<b>ANSWER:-</b><br>
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;ctype.h&gt;
+#define MAX 100
+
+int precedence(char ch) {
+    if(ch == &#x27;^&#x27;) return 3;
+    if(ch == &#x27;*&#x27; || ch == &#x27;/&#x27;) return 2;
+    if(ch == &#x27;+&#x27; || ch == &#x27;-&#x27;) return 1;
+    return 0;
+}
+
+int main() {
+    char infix[MAX], stack[MAX], postfix[MAX];
+    int top = -1, i, j = 0;
+
+    printf(&quot;Enter infix expression: &quot;);
+    scanf(&quot;%99s&quot;, infix);
+
+    for(i = 0; infix[i] != &#x27;\0&#x27;; i++) {
+        if(isalnum((unsigned char)infix[i]))
+            postfix[j++] = infix[i];
+        else if(infix[i] == &#x27;(&#x27;)
+            stack[++top] = infix[i];
+        else if(infix[i] == &#x27;)&#x27;) {
+            while(top != -1 &amp;&amp; stack[top] != &#x27;(&#x27;)
+                postfix[j++] = stack[top--];
+            if(top != -1) top--;
+        }
+        else {
+            while(top != -1 &amp;&amp; stack[top] != &#x27;(&#x27; &amp;&amp;
+                  (precedence(stack[top]) &gt; precedence(infix[i]) ||
+                  (precedence(stack[top]) == precedence(infix[i]) &amp;&amp; infix[i] != &#x27;^&#x27;)))
+                postfix[j++] = stack[top--];
+            stack[++top] = infix[i];
+        }
+    }
+
+    while(top != -1)
+        postfix[j++] = stack[top--];
+
+    postfix[j] = &#x27;\0&#x27;;
+
+    printf(&quot;Postfix expression: %s\n&quot;, postfix);
+    return 0;
+}
+</pre><br>
+<b>OUTPUT:-</b><br>
+Enter infix expression: A+B*C<br>
+Postfix expression: ABC*+
+<hr>
+<b>QUESTION 11:-</b><br>
+<p>CREATE A PROGRAM TO EVALUATE THE PREFIX EXPRESSION.</p><br>
+<b>ANSWER:-</b><br>
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;ctype.h&gt;
+#define MAX 100
+
+int power(int a, int b) {
+    int result = 1, i;
+    for(i = 0; i &lt; b; i++)
+        result = result * a;
+    return result;
+}
+
+int calculate(int a, int b, char op) {
+    switch(op) {
+        case &#x27;+&#x27;: return a + b;
+        case &#x27;-&#x27;: return a - b;
+        case &#x27;*&#x27;: return a * b;
+        case &#x27;/&#x27;: return a / b;
+        case &#x27;^&#x27;: return power(a, b);
+    }
+    return 0;
+}
+
+int main() {
+    char exp[MAX];
+    int stack[MAX], top = -1, i, a, b;
+
+    printf(&quot;Enter prefix expression: &quot;);
+    scanf(&quot;%99s&quot;, exp);
+
+    for(i = (int)strlen(exp) - 1; i &gt;= 0; i--) {
+        if(isdigit((unsigned char)exp[i]))
+            stack[++top] = exp[i] - &#x27;0&#x27;;
+        else {
+            if(top &lt; 1) {
+                printf(&quot;Invalid expression.\n&quot;);
+                return 0;
+            }
+            a = stack[top--];
+            b = stack[top--];
+
+            if(exp[i] == &#x27;/&#x27; &amp;&amp; b == 0) {
+                printf(&quot;Division by zero is not allowed.\n&quot;);
+                return 0;
+            }
+
+            stack[++top] = calculate(a, b, exp[i]);
+        }
+    }
+
+    if(top == 0)
+        printf(&quot;Result: %d\n&quot;, stack[top]);
+    else
+        printf(&quot;Invalid expression.\n&quot;);
+
+    return 0;
+}
+</pre><br>
+<b>OUTPUT:-</b><br>
+Enter prefix expression: +9*26<br>
+Result: 21
+<hr>
+<b>QUESTION 12:-</b><br>
+<p>CREATE A PROGRAM TO EVALUATE THE POSTFIX EXPRESSION.</p><br>
+<b>ANSWER:-</b><br>
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;ctype.h&gt;
+#define MAX 100
+
+int power(int a, int b) {
+    int result = 1, i;
+    for(i = 0; i &lt; b; i++)
+        result = result * a;
+    return result;
+}
+
+int calculate(int a, int b, char op) {
+    switch(op) {
+        case &#x27;+&#x27;: return a + b;
+        case &#x27;-&#x27;: return a - b;
+        case &#x27;*&#x27;: return a * b;
+        case &#x27;/&#x27;: return a / b;
+        case &#x27;^&#x27;: return power(a, b);
+    }
+    return 0;
+}
+
+int main() {
+    char exp[MAX];
+    int stack[MAX], top = -1, i, a, b;
+
+    printf(&quot;Enter postfix expression: &quot;);
+    scanf(&quot;%99s&quot;, exp);
+
+    for(i = 0; exp[i] != &#x27;\0&#x27;; i++) {
+        if(isdigit((unsigned char)exp[i]))
+            stack[++top] = exp[i] - &#x27;0&#x27;;
+        else {
+            if(top &lt; 1) {
+                printf(&quot;Invalid expression.\n&quot;);
+                return 0;
+            }
+            b = stack[top--];
+            a = stack[top--];
+
+            if(exp[i] == &#x27;/&#x27; &amp;&amp; b == 0) {
+                printf(&quot;Division by zero is not allowed.\n&quot;);
+                return 0;
+            }
+
+            stack[++top] = calculate(a, b, exp[i]);
+        }
+    }
+
+    if(top == 0)
+        printf(&quot;Result: %d\n&quot;, stack[top]);
+    else
+        printf(&quot;Invalid expression.\n&quot;);
+
+    return 0;
+}
+</pre><br>
+<b>OUTPUT:-</b><br>
+Enter postfix expression: 926*+<br>
+Result: 21
+<hr>
+<b>QUESTION 13:-</b><br>
+<p>IMPLEMENT THE TOWER OF HANOI USING STACKS.</p><br>
+<b>ANSWER:-</b><br>
+<pre>
+#include &lt;stdio.h&gt;
+#define MAX 20
+
+struct Stack {
+    int disk[MAX];
+    int top;
+};
+
+void push(struct Stack *s, int disk) {
+    s-&gt;disk[++s-&gt;top] = disk;
+}
+
+int pop(struct Stack *s) {
+    return s-&gt;disk[s-&gt;top--];
+}
+
+void moveDisks(struct Stack *a, struct Stack *b, char from, char to) {
+    int diskA, diskB;
+
+    if(a-&gt;top == -1) {
+        diskB = pop(b);
+        push(a, diskB);
+        printf(&quot;Move disk %d from %c to %c\n&quot;, diskB, to, from);
+    }
+    else if(b-&gt;top == -1) {
+        diskA = pop(a);
+        push(b, diskA);
+        printf(&quot;Move disk %d from %c to %c\n&quot;, diskA, from, to);
+    }
+    else if(a-&gt;disk[a-&gt;top] &lt; b-&gt;disk[b-&gt;top]) {
+        diskA = pop(a);
+        push(b, diskA);
+        printf(&quot;Move disk %d from %c to %c\n&quot;, diskA, from, to);
+    }
+    else {
+        diskB = pop(b);
+        push(a, diskB);
+        printf(&quot;Move disk %d from %c to %c\n&quot;, diskB, to, from);
+    }
+}
+
+int main() {
+    struct Stack source, auxiliary, destination, temp;
+    int n, i, totalMoves;
+    char sourceName = &#x27;A&#x27;, auxiliaryName = &#x27;B&#x27;, destinationName = &#x27;C&#x27;;
+
+    source.top = auxiliary.top = destination.top = -1;
+
+    printf(&quot;Enter number of disks (1-%d): &quot;, MAX);
+    scanf(&quot;%d&quot;, &amp;n);
+
+    if(n &lt; 1 || n &gt; MAX) {
+        printf(&quot;Invalid number of disks.\n&quot;);
+        return 0;
+    }
+
+    for(i = n; i &gt;= 1; i--)
+        push(&amp;source, i);
+
+    totalMoves = (1 &lt;&lt; n) - 1;
+
+    if(n % 2 == 0) {
+        temp = auxiliary;
+        auxiliary = destination;
+        destination = temp;
+
+        auxiliaryName = &#x27;C&#x27;;
+        destinationName = &#x27;B&#x27;;
+    }
+
+    for(i = 1; i &lt;= totalMoves; i++) {
+        if(i % 3 == 1)
+            moveDisks(&amp;source, &amp;destination, sourceName, destinationName);
+        else if(i % 3 == 2)
+            moveDisks(&amp;source, &amp;auxiliary, sourceName, auxiliaryName);
+        else
+            moveDisks(&amp;auxiliary, &amp;destination, auxiliaryName, destinationName);
+    }
+
+    return 0;
+}
+</pre><br>
+<b>OUTPUT:-</b><br>
+Enter number of disks (1-20): 3<br>
+Move disk 1 from A to C<br>
+Move disk 2 from A to B<br>
+Move disk 1 from C to B<br>
+Move disk 3 from A to C<br>
+Move disk 1 from B to A<br>
+Move disk 2 from B to C<br>
+Move disk 1 from A to C
+<hr>
+</body>
+</html>

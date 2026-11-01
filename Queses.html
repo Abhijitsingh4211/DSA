@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>QUEUES</title>
+</head>
+<body>
+<h2>QUEUE AND QUEUE APPLICATIONS PROGRAMS IN C</h2>
+<b>QUESTION 1:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF SIMPLE QUEUE IN AN INTEGER ARRAY (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#define MAX 5
+int q[MAX], front = -1, rear = -1;
+
+int isEmpty() { return front == -1; }
+int isFull() { return rear == MAX - 1; }
+
+void insert(int x) {
+    if (isFull()) { printf(&quot;Queue is full\n&quot;); return; }
+    if (isEmpty()) front = 0;
+    q[++rear] = x;
+}
+void deleteItem() {
+    if (isEmpty()) { printf(&quot;Queue is empty\n&quot;); return; }
+    printf(&quot;Deleted: %d\n&quot;, q[front]);
+    if (front == rear) front = rear = -1;
+    else front++;
+}
+void peek() {
+    if (isEmpty()) printf(&quot;Queue is empty\n&quot;);
+    else printf(&quot;Front: %d\n&quot;, q[front]);
+}
+int main() {
+    insert(10); insert(20); insert(30);
+    peek(); deleteItem(); peek();
+    printf(&quot;isEmpty: %s\n&quot;, isEmpty() ? &quot;Yes&quot; : &quot;No&quot;);
+    printf(&quot;isFull: %s\n&quot;, isFull() ? &quot;Yes&quot; : &quot;No&quot;);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br>
+<pre>Front: 10
+Deleted: 10
+Front: 20
+isEmpty: No
+isFull: No</pre>
+<hr>
+<b>QUESTION 2:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF SIMPLE QUEUE IN A STRING ARRAY (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#define MAX 5
+#define LEN 30
+char q[MAX][LEN];
+int front = -1, rear = -1;
+
+int isEmpty() { return front == -1; }
+int isFull() { return rear == MAX - 1; }
+void insert(char s[]) {
+    if (isFull()) { printf(&quot;Queue is full\n&quot;); return; }
+    if (isEmpty()) front = 0;
+    strcpy(q[++rear], s);
+}
+void deleteItem() {
+    if (isEmpty()) { printf(&quot;Queue is empty\n&quot;); return; }
+    printf(&quot;Deleted: %s\n&quot;, q[front]);
+    if (front == rear) front = rear = -1;
+    else front++;
+}
+void peek() {
+    if (isEmpty()) printf(&quot;Queue is empty\n&quot;);
+    else printf(&quot;Front: %s\n&quot;, q[front]);
+}
+int main() {
+    insert(&quot;Apple&quot;); insert(&quot;Banana&quot;); insert(&quot;Mango&quot;);
+    peek(); deleteItem(); peek();
+    printf(&quot;isEmpty: %s\n&quot;, isEmpty() ? &quot;Yes&quot; : &quot;No&quot;);
+    printf(&quot;isFull: %s\n&quot;, isFull() ? &quot;Yes&quot; : &quot;No&quot;);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br>
+<pre>Front: Apple
+Deleted: Apple
+Front: Banana
+isEmpty: No
+isFull: No</pre>
+<hr>
+<b>QUESTION 3:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF QUEUE DYNAMICALLY OF INTEGERS (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+typedef struct Node { int data; struct Node *next; } Node;
+Node *front = NULL, *rear = NULL;
+int isEmpty() { return front == NULL; }
+int isFull() { return 0; } /* Linked queue has no fixed capacity; allocation can still fail. */
+void insert(int x) {
+    Node *n = (Node *)malloc(sizeof(Node));
+    if (n == NULL) { printf(&quot;Memory allocation failed\n&quot;); return; }
+    n-&gt;data = x; n-&gt;next = NULL;
+    if (rear == NULL) front = rear = n;
+    else { rear-&gt;next = n; rear = n; }
+}
+void deleteItem() {
+    if (isEmpty()) { printf(&quot;Queue is empty\n&quot;); return; }
+    Node *t = front; printf(&quot;Deleted: %d\n&quot;, t-&gt;data);
+    front = front-&gt;next; if (front == NULL) rear = NULL; free(t);
+}
+void peek() {
+    if (isEmpty()) printf(&quot;Queue is empty\n&quot;);
+    else printf(&quot;Front: %d\n&quot;, front-&gt;data);
+}
+int main() {
+    insert(10); insert(20); insert(30); peek(); deleteItem(); peek();
+    printf(&quot;isEmpty: %s\n&quot;, isEmpty() ? &quot;Yes&quot; : &quot;No&quot;);
+    printf(&quot;isFull (fixed limit): %s\n&quot;, isFull() ? &quot;Yes&quot; : &quot;No&quot;);
+    while (front) deleteItem();
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br>
+<pre>Front: 10
+Deleted: 10
+Front: 20
+isEmpty: No
+isFull (fixed limit): No</pre>
+<hr>
+<b>QUESTION 4:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF QUEUE DYNAMICALLY OF STRING (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#define LEN 40
+typedef struct Node { char data[LEN]; struct Node *next; } Node;
+Node *front = NULL, *rear = NULL;
+int isEmpty() { return front == NULL; }
+int isFull() { return 0; }
+void insert(char s[]) {
+    Node *n = (Node *)malloc(sizeof(Node));
+    if (!n) { printf(&quot;Memory allocation failed\n&quot;); return; }
+    strcpy(n-&gt;data, s); n-&gt;next = NULL;
+    if (!rear) front = rear = n;
+    else { rear-&gt;next = n; rear = n; }
+}
+void deleteItem() {
+    if (isEmpty()) { printf(&quot;Queue is empty\n&quot;); return; }
+    Node *t = front; printf(&quot;Deleted: %s\n&quot;, t-&gt;data);
+    front = front-&gt;next; if (!front) rear = NULL; free(t);
+}
+void peek() {
+    if (isEmpty()) printf(&quot;Queue is empty\n&quot;);
+    else printf(&quot;Front: %s\n&quot;, front-&gt;data);
+}
+int main() {
+    insert(&quot;Red&quot;); insert(&quot;Green&quot;); insert(&quot;Blue&quot;);
+    peek(); deleteItem(); peek();
+    printf(&quot;isEmpty: %s\n&quot;, isEmpty() ? &quot;Yes&quot; : &quot;No&quot;);
+    printf(&quot;isFull (fixed limit): %s\n&quot;, isFull() ? &quot;Yes&quot; : &quot;No&quot;);
+    while (front) deleteItem();
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br>
+<pre>Front: Red
+Deleted: Red
+Front: Green
+isEmpty: No
+isFull (fixed limit): No</pre>
+<hr>
+<b>QUESTION 5:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF CIRCULAR QUEUE IN AN INTEGER ARRAY (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#define MAX 5
+int q[MAX], front = -1, rear = -1;
+int isEmpty() { return front == -1; }
+int isFull() { return (rear + 1) % MAX == front; }
+void insert(int x) {
+    if (isFull()) { printf(&quot;Queue is full\n&quot;); return; }
+    if (isEmpty()) front = rear = 0;
+    else rear = (rear + 1) % MAX;
+    q[rear] = x;
+}
+void deleteItem() {
+    if (isEmpty()) { printf(&quot;Queue is empty\n&quot;); return; }
+    printf(&quot;Deleted: %d\n&quot;, q[front]);
+    if (front == rear) front = rear = -1;
+    else front = (front + 1) % MAX;
+}
+void peek() {
+    if (isEmpty()) printf(&quot;Queue is empty\n&quot;);
+    else printf(&quot;Front: %d\n&quot;, q[front]);
+}
+int main() {
+    insert(10); insert(20); insert(30); peek(); deleteItem();
+    insert(40); insert(50); insert(60); peek();
+    printf(&quot;isEmpty: %s\n&quot;, isEmpty() ? &quot;Yes&quot; : &quot;No&quot;);
+    printf(&quot;isFull: %s\n&quot;, isFull() ? &quot;Yes&quot; : &quot;No&quot;);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br>
+<pre>Front: 10
+Deleted: 10
+Front: 20
+isEmpty: No
+isFull: Yes</pre>
+<hr>
+<b>QUESTION 6:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF CIRCULAR QUEUE IN A STRING ARRAY (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#define MAX 5
+#define LEN 30
+char q[MAX][LEN];
+int front = -1, rear = -1;
+int isEmpty() { return front == -1; }
+int isFull() { return (rear + 1) % MAX == front; }
+void insert(char s[]) {
+    if (isFull()) { printf(&quot;Queue is full\n&quot;); return; }
+    if (isEmpty()) front = rear = 0;
+    else rear = (rear + 1) % MAX;
+    strcpy(q[rear], s);
+}
+void deleteItem() {
+    if (isEmpty()) { printf(&quot;Queue is empty\n&quot;); return; }
+    printf(&quot;Deleted: %s\n&quot;, q[front]);
+    if (front == rear) front = rear = -1;
+    else front = (front + 1) % MAX;
+}
+void peek() {
+    if (isEmpty()) printf(&quot;Queue is empty\n&quot;);
+    else printf(&quot;Front: %s\n&quot;, q[front]);
+}
+int main() {
+    insert(&quot;One&quot;); insert(&quot;Two&quot;); insert(&quot;Three&quot;); peek(); deleteItem();
+    insert(&quot;Four&quot;); insert(&quot;Five&quot;); insert(&quot;Six&quot;); peek();
+    printf(&quot;isEmpty: %s\n&quot;, isEmpty() ? &quot;Yes&quot; : &quot;No&quot;);
+    printf(&quot;isFull: %s\n&quot;, isFull() ? &quot;Yes&quot; : &quot;No&quot;);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br>
+<pre>Front: One
+Deleted: One
+Front: Two
+isEmpty: No
+isFull: Yes</pre>
+<hr>
+<b>QUESTION 7:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF PRIORITY QUEUE IN AN INTEGER ARRAY (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#define MAX 5
+typedef struct { int value, priority; } Item;
+Item q[MAX]; int count = 0;
+int isEmpty() { return count == 0; }
+int isFull() { return count == MAX; }
+void insert(int value, int priority) {
+    if (isFull()) { printf(&quot;Queue is full\n&quot;); return; }
+    int i = count - 1;
+    while (i &gt;= 0 &amp;&amp; q[i].priority &lt; priority) { q[i + 1] = q[i]; i--; }
+    q[i + 1].value = value; q[i + 1].priority = priority; count++;
+}
+void deleteItem() {
+    if (isEmpty()) { printf(&quot;Queue is empty\n&quot;); return; }
+    printf(&quot;Deleted: %d (priority %d)\n&quot;, q[0].value, q[0].priority);
+    for (int i = 1; i &lt; count; i++) q[i - 1] = q[i];
+    count--;
+}
+void peek() {
+    if (isEmpty()) printf(&quot;Queue is empty\n&quot;);
+    else printf(&quot;Highest priority item: %d\n&quot;, q[0].value);
+}
+int main() {
+    insert(100, 1); insert(200, 3); insert(300, 2);
+    peek(); deleteItem(); peek();
+    printf(&quot;isEmpty: %s\n&quot;, isEmpty() ? &quot;Yes&quot; : &quot;No&quot;);
+    printf(&quot;isFull: %s\n&quot;, isFull() ? &quot;Yes&quot; : &quot;No&quot;);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br>
+<pre>Highest priority item: 200
+Deleted: 200 (priority 3)
+Highest priority item: 300
+isEmpty: No
+isFull: No</pre>
+<hr>
+<b>QUESTION 8:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF PRIORITY QUEUE IN A STRING ARRAY (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#define MAX 5
+#define LEN 30
+typedef struct { char value[LEN]; int priority; } Item;
+Item q[MAX]; int count = 0;
+int isEmpty() { return count == 0; }
+int isFull() { return count == MAX; }
+void insert(char value[], int priority) {
+    if (isFull()) { printf(&quot;Queue is full\n&quot;); return; }
+    int i = count - 1;
+    while (i &gt;= 0 &amp;&amp; q[i].priority &lt; priority) { q[i + 1] = q[i]; i--; }
+    strcpy(q[i + 1].value, value); q[i + 1].priority = priority; count++;
+}
+void deleteItem() {
+    if (isEmpty()) { printf(&quot;Queue is empty\n&quot;); return; }
+    printf(&quot;Deleted: %s (priority %d)\n&quot;, q[0].value, q[0].priority);
+    for (int i = 1; i &lt; count; i++) q[i - 1] = q[i];
+    count--;
+}
+void peek() {
+    if (isEmpty()) printf(&quot;Queue is empty\n&quot;);
+    else printf(&quot;Highest priority item: %s\n&quot;, q[0].value);
+}
+int main() {
+    insert(&quot;Normal&quot;, 1); insert(&quot;Urgent&quot;, 3); insert(&quot;Medium&quot;, 2);
+    peek(); deleteItem(); peek();
+    printf(&quot;isEmpty: %s\n&quot;, isEmpty() ? &quot;Yes&quot; : &quot;No&quot;);
+    printf(&quot;isFull: %s\n&quot;, isFull() ? &quot;Yes&quot; : &quot;No&quot;);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br>
+<pre>Highest priority item: Urgent
+Deleted: Urgent (priority 3)
+Highest priority item: Medium
+isEmpty: No
+isFull: No</pre>
+<hr>
+<b>QUESTION 9:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF DOUBLE ENDED QUEUE IN AN INTEGER ARRAY (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#define MAX 5
+int q[MAX], front = -1, rear = -1;
+int isEmpty() { return front == -1; }
+int isFull() { return (rear + 1) % MAX == front; }
+void insertRear(int x) {
+    if (isFull()) { printf(&quot;Deque is full\n&quot;); return; }
+    if (isEmpty()) front = rear = 0; else rear = (rear + 1) % MAX;
+    q[rear] = x;
+}
+void insertFront(int x) {
+    if (isFull()) { printf(&quot;Deque is full\n&quot;); return; }
+    if (isEmpty()) front = rear = 0;
+    else front = (front - 1 + MAX) % MAX;
+    q[front] = x;
+}
+void deleteFront() {
+    if (isEmpty()) { printf(&quot;Deque is empty\n&quot;); return; }
+    printf(&quot;Deleted front: %d\n&quot;, q[front]);
+    if (front == rear) front = rear = -1; else front = (front + 1) % MAX;
+}
+void deleteRear() {
+    if (isEmpty()) { printf(&quot;Deque is empty\n&quot;); return; }
+    printf(&quot;Deleted rear: %d\n&quot;, q[rear]);
+    if (front == rear) front = rear = -1; else rear = (rear - 1 + MAX) % MAX;
+}
+void peek() {
+    if (isEmpty()) printf(&quot;Deque is empty\n&quot;);
+    else printf(&quot;Front: %d, Rear: %d\n&quot;, q[front], q[rear]);
+}
+int main() {
+    insertRear(20); insertFront(10); insertRear(30); peek();
+    deleteFront(); peek();
+    printf(&quot;isEmpty: %s\n&quot;, isEmpty() ? &quot;Yes&quot; : &quot;No&quot;);
+    printf(&quot;isFull: %s\n&quot;, isFull() ? &quot;Yes&quot; : &quot;No&quot;);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br>
+<pre>Front: 10, Rear: 30
+Deleted front: 10
+Front: 20, Rear: 30
+isEmpty: No
+isFull: No</pre>
+<hr>
+<b>QUESTION 10:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF DOUBLE ENDED QUEUE IN A STRING ARRAY (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#define MAX 5
+#define LEN 30
+char q[MAX][LEN]; int front = -1, rear = -1;
+int isEmpty() { return front == -1; }
+int isFull() { return (rear + 1) % MAX == front; }
+void insertRear(char s[]) {
+    if (isFull()) { printf(&quot;Deque is full\n&quot;); return; }
+    if (isEmpty()) front = rear = 0; else rear = (rear + 1) % MAX;
+    strcpy(q[rear], s);
+}
+void insertFront(char s[]) {
+    if (isFull()) { printf(&quot;Deque is full\n&quot;); return; }
+    if (isEmpty()) front = rear = 0; else front = (front - 1 + MAX) % MAX;
+    strcpy(q[front], s);
+}
+void deleteFront() {
+    if (isEmpty()) { printf(&quot;Deque is empty\n&quot;); return; }
+    printf(&quot;Deleted front: %s\n&quot;, q[front]);
+    if (front == rear) front = rear = -1; else front = (front + 1) % MAX;
+}
+void deleteRear() {
+    if (isEmpty()) { printf(&quot;Deque is empty\n&quot;); return; }
+    printf(&quot;Deleted rear: %s\n&quot;, q[rear]);
+    if (front == rear) front = rear = -1; else rear = (rear - 1 + MAX) % MAX;
+}
+void peek() {
+    if (isEmpty()) printf(&quot;Deque is empty\n&quot;);
+    else printf(&quot;Front: %s, Rear: %s\n&quot;, q[front], q[rear]);
+}
+int main() {
+    insertRear(&quot;Banana&quot;); insertFront(&quot;Apple&quot;); insertRear(&quot;Mango&quot;); peek();
+    deleteFront(); peek();
+    printf(&quot;isEmpty: %s\n&quot;, isEmpty() ? &quot;Yes&quot; : &quot;No&quot;);
+    printf(&quot;isFull: %s\n&quot;, isFull() ? &quot;Yes&quot; : &quot;No&quot;);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br>
+<pre>Front: Apple, Rear: Mango
+Deleted front: Apple
+Front: Banana, Rear: Mango
+isEmpty: No
+isFull: No</pre>
+<hr>
+<b>QUESTION 11:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF PRIORITY QUEUE DYNAMICALLY OF INTEGERS (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+typedef struct Node { int value, priority; struct Node *next; } Node;
+Node *front = NULL;
+int isEmpty() { return front == NULL; }
+int isFull() { return 0; }
+void insert(int value, int priority) {
+    Node *n = (Node *)malloc(sizeof(Node));
+    if (!n) { printf(&quot;Memory allocation failed\n&quot;); return; }
+    n-&gt;value = value; n-&gt;priority = priority;
+    if (!front || priority &gt; front-&gt;priority) { n-&gt;next = front; front = n; }
+    else {
+        Node *p = front;
+        while (p-&gt;next &amp;&amp; p-&gt;next-&gt;priority &gt;= priority) p = p-&gt;next;
+        n-&gt;next = p-&gt;next; p-&gt;next = n;
+    }
+}
+void deleteItem() {
+    if (isEmpty()) { printf(&quot;Queue is empty\n&quot;); return; }
+    Node *t = front; printf(&quot;Deleted: %d (priority %d)\n&quot;, t-&gt;value, t-&gt;priority);
+    front = front-&gt;next; free(t);
+}
+void peek() {
+    if (isEmpty()) printf(&quot;Queue is empty\n&quot;);
+    else printf(&quot;Highest priority item: %d\n&quot;, front-&gt;value);
+}
+int main() {
+    insert(10, 1); insert(30, 3); insert(20, 2);
+    peek(); deleteItem(); peek();
+    printf(&quot;isEmpty: %s\n&quot;, isEmpty() ? &quot;Yes&quot; : &quot;No&quot;);
+    printf(&quot;isFull (fixed limit): %s\n&quot;, isFull() ? &quot;Yes&quot; : &quot;No&quot;);
+    while (front) deleteItem();
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br>
+<pre>Highest priority item: 30
+Deleted: 30 (priority 3)
+Highest priority item: 20
+isEmpty: No
+isFull (fixed limit): No</pre>
+<hr>
+<b>QUESTION 12:-</b><br>
+<p>IMPLEMENT THE OPERATIONS OF PRIORITY QUEUE DYNAMICALLY OF STRING (INSERT, DELETE, PEEK, ISEMPTY, ISFULL)</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#define LEN 40
+typedef struct Node { char value[LEN]; int priority; struct Node *next; } Node;
+Node *front = NULL;
+int isEmpty() { return front == NULL; }
+int isFull() { return 0; }
+void insert(char value[], int priority) {
+    Node *n = (Node *)malloc(sizeof(Node));
+    if (!n) { printf(&quot;Memory allocation failed\n&quot;); return; }
+    strcpy(n-&gt;value, value); n-&gt;priority = priority;
+    if (!front || priority &gt; front-&gt;priority) { n-&gt;next = front; front = n; }
+    else {
+        Node *p = front;
+        while (p-&gt;next &amp;&amp; p-&gt;next-&gt;priority &gt;= priority) p = p-&gt;next;
+        n-&gt;next = p-&gt;next; p-&gt;next = n;
+    }
+}
+void deleteItem() {
+    if (isEmpty()) { printf(&quot;Queue is empty\n&quot;); return; }
+    Node *t = front; printf(&quot;Deleted: %s (priority %d)\n&quot;, t-&gt;value, t-&gt;priority);
+    front = front-&gt;next; free(t);
+}
+void peek() {
+    if (isEmpty()) printf(&quot;Queue is empty\n&quot;);
+    else printf(&quot;Highest priority item: %s\n&quot;, front-&gt;value);
+}
+int main() {
+    insert(&quot;Normal&quot;, 1); insert(&quot;Urgent&quot;, 3); insert(&quot;Medium&quot;, 2);
+    peek(); deleteItem(); peek();
+    printf(&quot;isEmpty: %s\n&quot;, isEmpty() ? &quot;Yes&quot; : &quot;No&quot;);
+    printf(&quot;isFull (fixed limit): %s\n&quot;, isFull() ? &quot;Yes&quot; : &quot;No&quot;);
+    while (front) deleteItem();
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br>
+<pre>Highest priority item: Urgent
+Deleted: Urgent (priority 3)
+Highest priority item: Medium
+isEmpty: No
+isFull (fixed limit): No</pre>
+<hr>
+<b>QUESTION 13:-</b><br>
+<p>FIND THE FIRST CIRCULAR TOUR THAT VISITS ALL PETROL PUMPS</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+typedef struct { int petrol, distance; } Pump;
+int circularTour(Pump p[], int n) {
+    int start = 0, balance = 0, deficit = 0;
+    for (int i = 0; i &lt; n; i++) {
+        balance += p[i].petrol - p[i].distance;
+        if (balance &lt; 0) { start = i + 1; deficit += balance; balance = 0; }
+    }
+    return (balance + deficit &gt;= 0 &amp;&amp; start &lt; n) ? start : -1;
+}
+int main() {
+    Pump p[] = {{4, 6}, {6, 5}, {7, 3}, {4, 5}};
+    int n = sizeof(p) / sizeof(p[0]);
+    int ans = circularTour(p, n);
+    if (ans == -1) printf(&quot;No possible tour\n&quot;);
+    else printf(&quot;First petrol pump index: %d\n&quot;, ans);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br>
+<pre>First petrol pump index: 1</pre>
+<hr>
+<b>QUESTION 14:-</b><br>
+<p>LENGTH OF THE LONGEST VALID SUBSTRING</p><br>
+<b>ANSWER:-</b><br>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#define MAX 100
+int longestValid(char s[]) {
+    int st[MAX], top = -1, last = -1, best = 0;
+    for (int i = 0; s[i] != &#x27;\0&#x27;; i++) {
+        if (s[i] == &#x27;(&#x27;) st[++top] = i;
+        else {
+            if (top == -1) last = i;
+            else {
+                top--;
+                int len = (top == -1) ? i - last : i - st[top];
+                if (len &gt; best) best = len;
+            }
+        }
+    }
+    return best;
+}
+int main() {
+    char s[] = &quot;)()())&quot;;
+    printf(&quot;String: %s\n&quot;, s);
+    printf(&quot;Longest valid substring length: %d\n&quot;, longestValid(s));
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br>
+<pre>String: )()())
+Longest valid substring length: 4</pre>
+<hr>

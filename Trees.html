@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Trees</title>
+</head>
+<body>
+<h2>BINARY TREES AND BINARY SEARCH TREE PROGRAMS IN C</h2>
+<b>QUESTION 1:-</b><br><p>CONSTRUCT BINARY TREE FROM PREORDER AND INORDER TRAVERSAL</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+int pre[] = {1, 2, 4, 5, 3}, in[] = {4, 2, 5, 1, 3}, index = 0;
+typedef struct Node { int data; struct Node *left, *right; } Node;
+Node *make(int x) { Node *n = malloc(sizeof(Node)); n-&gt;data=x; n-&gt;left=n-&gt;right=NULL; return n; }
+int find(int x, int l, int r) { for(int i=l;i&lt;=r;i++) if(in[i]==x) return i; return -1; }
+Node *build(int l,int r) {
+    if(l&gt;r) return NULL;
+    int x=pre[index++], k=find(x,l,r); Node *n=make(x);
+    n-&gt;left=build(l,k-1); n-&gt;right=build(k+1,r); return n;
+}
+void post(Node *r) { if(r){post(r-&gt;left);post(r-&gt;right);printf(&quot;%d &quot;,r-&gt;data);} }
+int main(){ Node *root=build(0,4); printf(&quot;Postorder: &quot;);post(root);return 0; }</pre>
+<b>OUTPUT:-</b><br><pre>Postorder: 4 5 2 3 1</pre><hr>
+<b>QUESTION 2:-</b><br><p>BINARY TREE LEVEL ORDER TRAVERSAL</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+typedef struct Node{int data;struct Node *left,*right;}Node;
+Node *newNode(int x){Node*n=malloc(sizeof(Node));n-&gt;data=x;n-&gt;left=n-&gt;right=NULL;return n;}
+void levelOrder(Node*r){if(!r)return;Node*q[100];int f=0,b=0;q[b++]=r;while(f&lt;b){Node*t=q[f++];printf(&quot;%d &quot;,t-&gt;data);if(t-&gt;left)q[b++]=t-&gt;left;if(t-&gt;right)q[b++]=t-&gt;right;}}
+int main(){Node*r=newNode(1);r-&gt;left=newNode(2);r-&gt;right=newNode(3);r-&gt;left-&gt;left=newNode(4);r-&gt;left-&gt;right=newNode(5);printf(&quot;Level order: &quot;);levelOrder(r);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Level order: 1 2 3 4 5</pre><hr>
+<b>QUESTION 3:-</b><br><p>PRINT LEFT VIEW OF BINARY TREE</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+typedef struct Node{int data;struct Node*l,*r;}Node;
+Node*nn(int x){Node*n=malloc(sizeof(Node));n-&gt;data=x;n-&gt;l=n-&gt;r=NULL;return n;}
+void view(Node*n,int level,int*max){if(!n)return;if(level&gt;*max){printf(&quot;%d &quot;,n-&gt;data);*max=level;}view(n-&gt;l,level+1,max);view(n-&gt;r,level+1,max);}
+int main(){Node*r=nn(1);r-&gt;l=nn(2);r-&gt;r=nn(3);r-&gt;l-&gt;r=nn(4);r-&gt;r-&gt;r=nn(5);int m=0;printf(&quot;Left view: &quot;);view(r,1,&amp;m);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Left view: 1 2 4</pre><hr>
+<b>QUESTION 4:-</b><br><p>DISPLAY THE RIGHT VIEW OF BINARY TREE</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+typedef struct Node{int data;struct Node*l,*r;}Node;
+Node*nn(int x){Node*n=malloc(sizeof(Node));n-&gt;data=x;n-&gt;l=n-&gt;r=NULL;return n;}
+void view(Node*n,int level,int*max){if(!n)return;if(level&gt;*max){printf(&quot;%d &quot;,n-&gt;data);*max=level;}view(n-&gt;r,level+1,max);view(n-&gt;l,level+1,max);}
+int main(){Node*r=nn(1);r-&gt;l=nn(2);r-&gt;r=nn(3);r-&gt;l-&gt;r=nn(4);r-&gt;r-&gt;r=nn(5);int m=0;printf(&quot;Right view: &quot;);view(r,1,&amp;m);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Right view: 1 3 5</pre><hr>
+<b>QUESTION 5:-</b><br><p>CONSTRUCT BINARY TREE FROM POSTORDER AND INORDER TRAVERSAL</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+int post[] = {4,5,2,3,1}, in[] = {4,2,5,1,3}, index=4;
+typedef struct Node{int data;struct Node*l,*r;}Node;
+Node*nn(int x){Node*n=malloc(sizeof(Node));n-&gt;data=x;n-&gt;l=n-&gt;r=NULL;return n;}
+int find(int x,int l,int r){for(int i=l;i&lt;=r;i++)if(in[i]==x)return i;return -1;}
+Node*build(int l,int r){if(l&gt;r)return NULL;int x=post[index--],k=find(x,l,r);Node*n=nn(x);n-&gt;r=build(k+1,r);n-&gt;l=build(l,k-1);return n;}
+void preorder(Node*n){if(n){printf(&quot;%d &quot;,n-&gt;data);preorder(n-&gt;l);preorder(n-&gt;r);}}
+int main(){Node*r=build(0,4);printf(&quot;Preorder: &quot;);preorder(r);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Preorder: 1 2 4 5 3</pre><hr>
+<b>QUESTION 6:-</b><br><p>FIND THE MAXIMUM DEPTH OF BINARY TREE</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+typedef struct Node{int data;struct Node*l,*r;}Node;
+Node*nn(int x){Node*n=malloc(sizeof(Node));n-&gt;data=x;n-&gt;l=n-&gt;r=NULL;return n;}
+int depth(Node*n){if(!n)return 0;int a=depth(n-&gt;l),b=depth(n-&gt;r);return 1+(a&gt;b?a:b);}
+int main(){Node*r=nn(1);r-&gt;l=nn(2);r-&gt;r=nn(3);r-&gt;l-&gt;l=nn(4);r-&gt;l-&gt;l-&gt;r=nn(5);printf(&quot;Maximum depth: %d&quot;,depth(r));return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Maximum depth: 4</pre><hr>
+<b>QUESTION 7:-</b><br><p>CREATE BINARY SEARCH TREE USING ARRAYS (INSERT, DELETE, SEARCH, PREORDER, INORDER, POSTORDER, MINIMUM ELEMENT)</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#define SIZE 100
+#define EMPTY -9999
+int t[SIZE];
+void init(){for(int i=0;i&lt;SIZE;i++)t[i]=EMPTY;}
+void insert(int x){int i=0;while(i&lt;SIZE&amp;&amp;t[i]!=EMPTY){if(x&lt;t[i])i=2*i+1;else if(x&gt;t[i])i=2*i+2;else return;}if(i&lt;SIZE)t[i]=x;}
+int search(int x){int i=0;while(i&lt;SIZE&amp;&amp;t[i]!=EMPTY){if(t[i]==x)return 1;i=x&lt;t[i]?2*i+1:2*i+2;}return 0;}
+void inorder(int i){if(i&gt;=SIZE||t[i]==EMPTY)return;inorder(2*i+1);printf(&quot;%d &quot;,t[i]);inorder(2*i+2);}
+void preorder(int i){if(i&gt;=SIZE||t[i]==EMPTY)return;printf(&quot;%d &quot;,t[i]);preorder(2*i+1);preorder(2*i+2);}
+void postorder(int i){if(i&gt;=SIZE||t[i]==EMPTY)return;postorder(2*i+1);postorder(2*i+2);printf(&quot;%d &quot;,t[i]);}
+int minIndex(int i){while(2*i+1&lt;SIZE&amp;&amp;t[2*i+1]!=EMPTY)i=2*i+1;return i;}
+int removeNode(int i,int x){
+ if(i&gt;=SIZE||t[i]==EMPTY)return i;
+ if(x&lt;t[i])removeNode(2*i+1,x);else if(x&gt;t[i])removeNode(2*i+2,x);
+ else {int l=2*i+1,r=2*i+2;
+  if((l&gt;=SIZE||t[l]==EMPTY)&amp;&amp;(r&gt;=SIZE||t[r]==EMPTY))t[i]=EMPTY;
+  else if(l&lt;SIZE&amp;&amp;t[l]!=EMPTY&amp;&amp; (r&gt;=SIZE||t[r]==EMPTY)){t[i]=t[l];removeNode(l,t[i]);}
+  else if(r&lt;SIZE&amp;&amp;t[r]!=EMPTY&amp;&amp;(l&gt;=SIZE||t[l]==EMPTY)){t[i]=t[r];removeNode(r,t[i]);}
+  else {int m=minIndex(r),v=t[m];t[i]=v;removeNode(r,v);}
+ }return i;
+}
+int main(){init();insert(50);insert(30);insert(70);insert(20);insert(40);insert(60);insert(80);
+ printf(&quot;Inorder: &quot;);inorder(0);printf(&quot;\\nPreorder: &quot;);preorder(0);printf(&quot;\\nPostorder: &quot;);postorder(0);
+ printf(&quot;\\nSearch 40: %s&quot;,search(40)?&quot;Found&quot;:&quot;Not found&quot;);printf(&quot;\\nMinimum: %d&quot;,t[minIndex(0)]);
+ removeNode(0,30);printf(&quot;\\nAfter deleting 30: &quot;);inorder(0);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Inorder: 20 30 40 50 60 70 80 
+Preorder: 50 30 20 40 70 60 80 
+Postorder: 20 40 30 60 80 70 50 
+Search 40: Found
+Minimum: 20
+After deleting 30: 20 40 50 60 70 80 </pre><hr>
+<b>QUESTION 8:-</b><br><p>CREATE BINARY SEARCH TREE DYNAMICALLY (INSERT, DELETE, SEARCH, PREORDER, INORDER, POSTORDER, MINIMUM ELEMENT)</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+typedef struct Node{int data;struct Node*l,*r;}Node;
+Node*insert(Node*n,int x){if(!n){n=malloc(sizeof(Node));n-&gt;data=x;n-&gt;l=n-&gt;r=NULL;}else if(x&lt;n-&gt;data)n-&gt;l=insert(n-&gt;l,x);else if(x&gt;n-&gt;data)n-&gt;r=insert(n-&gt;r,x);return n;}
+int search(Node*n,int x){if(!n)return 0;if(n-&gt;data==x)return 1;return x&lt;n-&gt;data?search(n-&gt;l,x):search(n-&gt;r,x);}
+Node*minimum(Node*n){while(n&amp;&amp;n-&gt;l)n=n-&gt;l;return n;}
+Node*deleteNode(Node*n,int x){if(!n)return NULL;if(x&lt;n-&gt;data)n-&gt;l=deleteNode(n-&gt;l,x);else if(x&gt;n-&gt;data)n-&gt;r=deleteNode(n-&gt;r,x);else if(!n-&gt;l){Node*t=n-&gt;r;free(n);return t;}else if(!n-&gt;r){Node*t=n-&gt;l;free(n);return t;}else{Node*t=minimum(n-&gt;r);n-&gt;data=t-&gt;data;n-&gt;r=deleteNode(n-&gt;r,t-&gt;data);}return n;}
+void in(Node*n){if(n){in(n-&gt;l);printf(&quot;%d &quot;,n-&gt;data);in(n-&gt;r);}}
+void pre(Node*n){if(n){printf(&quot;%d &quot;,n-&gt;data);pre(n-&gt;l);pre(n-&gt;r);}}
+void post(Node*n){if(n){post(n-&gt;l);post(n-&gt;r);printf(&quot;%d &quot;,n-&gt;data);}}
+int main(){Node*r=NULL;int a[]={50,30,70,20,40,60,80};for(int i=0;i&lt;7;i++)r=insert(r,a[i]);
+ printf(&quot;Inorder: &quot;);in(r);printf(&quot;\\nPreorder: &quot;);pre(r);printf(&quot;\\nPostorder: &quot;);post(r);
+ printf(&quot;\\nSearch 40: %s&quot;,search(r,40)?&quot;Found&quot;:&quot;Not found&quot;);printf(&quot;\\nMinimum: %d&quot;,minimum(r)-&gt;data);
+ r=deleteNode(r,30);printf(&quot;\\nAfter deleting 30: &quot;);in(r);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Inorder: 20 30 40 50 60 70 80 
+Preorder: 50 30 20 40 70 60 80 
+Postorder: 20 40 30 60 80 70 50 
+Search 40: Found
+Minimum: 20
+After deleting 30: 20 40 50 60 70 80 </pre><hr>
+<b>QUESTION 9:-</b><br><p>FIND INORDER PREDECESSOR AND INORDER SUCCESSOR OF BINARY SEARCH TREE (DYNAMICALLY REPRESENTED)</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+typedef struct Node{int data;struct Node*l,*r;}Node;
+Node*ins(Node*n,int x){if(!n){n=malloc(sizeof(Node));n-&gt;data=x;n-&gt;l=n-&gt;r=NULL;}else if(x&lt;n-&gt;data)n-&gt;l=ins(n-&gt;l,x);else n-&gt;r=ins(n-&gt;r,x);return n;}
+void findPredSucc(Node*n,int key,Node**pre,Node**suc){
+ *pre=*suc=NULL;
+ while(n){if(n-&gt;data==key){if(n-&gt;l){Node*t=n-&gt;l;while(t-&gt;r)t=t-&gt;r;*pre=t;}if(n-&gt;r){Node*t=n-&gt;r;while(t-&gt;l)t=t-&gt;l;*suc=t;}break;}
+ if(key&lt;n-&gt;data){*suc=n;n=n-&gt;l;}else{*pre=n;n=n-&gt;r;}}
+}
+int main(){Node*r=NULL;int a[]={50,30,70,20,40,60,80};for(int i=0;i&lt;7;i++)r=ins(r,a[i]);Node*p,*s;findPredSucc(r,50,&amp;p,&amp;s);
+ printf(&quot;Key: 50\\nPredecessor: %d\\nSuccessor: %d&quot;,p?p-&gt;data:-1,s?s-&gt;data:-1);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Key: 50
+Predecessor: 40
+Successor: 60</pre><hr>
+<b>QUESTION 10:-</b><br><p>CHECK WHETHER BINARY SEARCH TREE CONTAINS DEAD END</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+typedef struct Node{int data;struct Node*l,*r;}Node;
+Node*ins(Node*n,int x){if(!n){n=malloc(sizeof(Node));n-&gt;data=x;n-&gt;l=n-&gt;r=NULL;}else if(x&lt;n-&gt;data)n-&gt;l=ins(n-&gt;l,x);else n-&gt;r=ins(n-&gt;r,x);return n;}
+int dead(Node*n,int low,int high){if(!n)return 0;if(low==high)return 1;return dead(n-&gt;l,low,n-&gt;data-1)||dead(n-&gt;r,n-&gt;data+1,high);}
+int main(){Node*r=NULL;int a[]={8,5,9,2,7,1,3};for(int i=0;i&lt;7;i++)r=ins(r,a[i]);printf(&quot;Contains dead end: %s&quot;,dead(r,1,100)?&quot;Yes&quot;:&quot;No&quot;);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Contains dead end: Yes</pre><hr>
+<b>QUESTION 11:-</b><br><p>CREATE BINARY TREE TO BINARY SEARCH TREE THROUGH ARRAY</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#define N 7
+int cmp(const void*a,const void*b){return *(int*)a-*(int*)b;}
+void inorder(int t[],int i,int*a,int*k){if(i&gt;=N)return;inorder(t,2*i+1,a,k);t[i]=a[(*k)++];inorder(t,2*i+2,a,k);}
+void printIn(int t[],int i){if(i&gt;=N)return;printIn(t,2*i+1);printf(&quot;%d &quot;,t[i]);printIn(t,2*i+2);}
+int main(){int tree[N]={10,30,15,20,5,25,35},sorted[N];for(int i=0;i&lt;N;i++)sorted[i]=tree[i];qsort(sorted,N,sizeof(int),cmp);int k=0;inorder(tree,0,sorted,&amp;k);printf(&quot;BST inorder: &quot;);printIn(tree,0);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>BST inorder: 5 10 15 20 25 30 35 </pre><hr>
+<b>QUESTION 12:-</b><br><p>FIND KTH LARGEST ELEMENT IN BINARY SEARCH TREE THROUGH ARRAY</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#define N 7
+int t[N]={50,30,70,20,40,60,80},k=3,count=0,answer=-1;
+void reverseIn(int i){if(i&gt;=N||t[i]==-1||answer!=-1)return;reverseIn(2*i+2);if(++count==k){answer=t[i];return;}reverseIn(2*i+1);}
+int main(){reverseIn(0);printf(&quot;%dth largest element: %d&quot;,k,answer);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>3th largest element: 60</pre><hr>
+<b>QUESTION 13:-</b><br><p>FIND KTH SMALLEST ELEMENT IN A BINARY SEARCH TREE THROUGH ARRAY</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#define N 7
+int t[N]={50,30,70,20,40,60,80},k=3,count=0,answer=-1;
+void inorder(int i){if(i&gt;=N||t[i]==-1||answer!=-1)return;inorder(2*i+1);if(++count==k){answer=t[i];return;}inorder(2*i+2);}
+int main(){inorder(0);printf(&quot;%dth smallest element: %d&quot;,k,answer);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>3th smallest element: 40</pre><hr>
+<b>QUESTION 14:-</b><br><p>PRINT PREORDER TRAVERSAL TO POSTORDER TRAVERSAL OF BINARY SEARCH TREE</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+int pre[]={40,30,35,80,100},index=0;
+void post(int low,int high){if(index&gt;=5)return;int x=pre[index];if(x&lt;low||x&gt;high)return;index++;post(low,x);post(x,high);printf(&quot;%d &quot;,x);}
+int main(){printf(&quot;Postorder: &quot;);post(-9999,9999);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Postorder: 35 30 100 80 40 </pre><hr>
+<b>QUESTION 15:-</b><br><p>CONSTRUCT BINARY SEARCH TREE FROM GIVEN PREORDER TRAVERSAL THROUGH ARRAYS</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#define N 5
+int tree[100],pre[]={40,30,35,80,100};
+void insert(int x){int i=0;while(i&lt;100){if(tree[i]==-1){tree[i]=x;return;}if(x&lt;tree[i])i=2*i+1;else i=2*i+2;}}
+void inorder(int i){if(i&gt;=100||tree[i]==-1)return;inorder(2*i+1);printf(&quot;%d &quot;,tree[i]);inorder(2*i+2);}
+int main(){for(int i=0;i&lt;100;i++)tree[i]=-1;for(int i=0;i&lt;N;i++)insert(pre[i]);printf(&quot;Inorder of constructed BST: &quot;);inorder(0);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Inorder of constructed BST: 30 35 40 80 100 </pre><hr>
+<b>QUESTION 16:-</b><br><p>CONSTRUCT BINARY SEARCH TREE FROM GIVEN POSTORDER TRAVERSAL THROUGH ARRAYS</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#define N 5
+int tree[100],post[]={35,30,100,80,40};
+void insert(int x){int i=0;while(i&lt;100){if(tree[i]==-1){tree[i]=x;return;}if(x&lt;tree[i])i=2*i+1;else i=2*i+2;}}
+void inorder(int i){if(i&gt;=100||tree[i]==-1)return;inorder(2*i+1);printf(&quot;%d &quot;,tree[i]);inorder(2*i+2);}
+int main(){for(int i=0;i&lt;100;i++)tree[i]=-1;for(int i=N-1;i&gt;=0;i--)insert(post[i]);printf(&quot;Inorder of constructed BST: &quot;);inorder(0);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Inorder of constructed BST: 30 35 40 80 100 </pre><hr>
+<b>QUESTION 17:-</b><br><p>CREATE STRICTLY BINARY TREE FROM THE GIVEN INPUT BY THE USER (DYNAMICALLY)</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+typedef struct Node{int data;struct Node*l,*r;}Node;
+Node*create(){int x;printf(&quot;Enter data (-1 for no node): &quot;);if(scanf(&quot;%d&quot;,&amp;x)!=1||x==-1)return NULL;Node*n=malloc(sizeof(Node));n-&gt;data=x;
+ printf(&quot;Left child of %d\\n&quot;,x);n-&gt;l=create();printf(&quot;Right child of %d\\n&quot;,x);n-&gt;r=create();return n;}
+int strict(Node*n){if(!n)return 1;if((n-&gt;l==NULL)!=(n-&gt;r==NULL))return 0;return strict(n-&gt;l)&amp;&amp;strict(n-&gt;r);}
+void pre(Node*n){if(n){printf(&quot;%d &quot;,n-&gt;data);pre(n-&gt;l);pre(n-&gt;r);}}
+int main(){Node*r=create();printf(&quot;Preorder: &quot;);pre(r);printf(&quot;\\nStrictly binary tree: %s&quot;,strict(r)?&quot;Yes&quot;:&quot;No&quot;);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Example input (preorder): 1 2 -1 -1 3 -1 -1
+Preorder: 1 2 3 
+Strictly binary tree: Yes</pre><hr>
+<b>QUESTION 18:-</b><br><p>CREATE ALMOST COMPLETE BINARY TREE FROM THE GIVEN INPUT BY THE USER (DYNAMICALLY)</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+typedef struct Node{int data;struct Node*l,*r;}Node;
+Node*newNode(int x){Node*n=malloc(sizeof(Node));n-&gt;data=x;n-&gt;l=n-&gt;r=NULL;return n;}
+void level(Node*r){Node*q[100];int f=0,b=0;if(r)q[b++]=r;while(f&lt;b){Node*n=q[f++];printf(&quot;%d &quot;,n-&gt;data);if(n-&gt;l)q[b++]=n-&gt;l;if(n-&gt;r)q[b++]=n-&gt;r;}}
+int main(){int n,x;Node*nodes[100];printf(&quot;Number of nodes: &quot;);scanf(&quot;%d&quot;,&amp;n);if(n&lt;1||n&gt;100)return 0;
+ for(int i=0;i&lt;n;i++){printf(&quot;Data: &quot;);scanf(&quot;%d&quot;,&amp;x);nodes[i]=newNode(x);}
+ for(int i=0;i&lt;n;i++){if(2*i+1&lt;n)nodes[i]-&gt;l=nodes[2*i+1];if(2*i+2&lt;n)nodes[i]-&gt;r=nodes[2*i+2];}
+ printf(&quot;Level order: &quot;);level(nodes[0]);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Example input: 5 nodes with values 1 2 3 4 5
+Level order: 1 2 3 4 5 </pre><hr>
+<b>QUESTION 19:-</b><br><p>CREATE COMPLETE BINARY TREE FROM THE GIVEN INPUT BY THE USER (DYNAMICALLY)</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+typedef struct Node{int data;struct Node*l,*r;}Node;
+Node*newNode(int x){Node*n=malloc(sizeof(Node));n-&gt;data=x;n-&gt;l=n-&gt;r=NULL;return n;}
+void level(Node*r){Node*q[100];int f=0,b=0;if(r)q[b++]=r;while(f&lt;b){Node*n=q[f++];printf(&quot;%d &quot;,n-&gt;data);if(n-&gt;l)q[b++]=n-&gt;l;if(n-&gt;r)q[b++]=n-&gt;r;}}
+int main(){int n,x;Node*nodes[100];printf(&quot;Enter number of nodes: &quot;);scanf(&quot;%d&quot;,&amp;n);if(n&lt;1||n&gt;100)return 0;
+ for(int i=0;i&lt;n;i++){printf(&quot;Enter node %d: &quot;,i+1);scanf(&quot;%d&quot;,&amp;x);nodes[i]=newNode(x);}
+ for(int i=0;i&lt;n;i++){if(2*i+1&lt;n)nodes[i]-&gt;l=nodes[2*i+1];if(2*i+2&lt;n)nodes[i]-&gt;r=nodes[2*i+2];}
+ printf(&quot;Complete binary tree (level order): &quot;);level(nodes[0]);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Enter number of nodes: 5
+Enter node values: 1 2 3 4 5
+Complete binary tree (level order): 1 2 3 4 5 </pre><hr>
+<b>QUESTION 20:-</b><br><p>COUNT THE NUMBER OF NODES IN BINARY SEARCH TREE CONSTRUCTED DYNAMICALLY</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+typedef struct Node{int data;struct Node*l,*r;}Node;
+Node*insert(Node*n,int x){if(!n){n=malloc(sizeof(Node));n-&gt;data=x;n-&gt;l=n-&gt;r=NULL;}else if(x&lt;n-&gt;data)n-&gt;l=insert(n-&gt;l,x);else if(x&gt;n-&gt;data)n-&gt;r=insert(n-&gt;r,x);return n;}
+int count(Node*n){if(!n)return 0;return 1+count(n-&gt;l)+count(n-&gt;r);}
+int main(){Node*r=NULL;int a[]={50,30,70,20,40,60,80};for(int i=0;i&lt;7;i++)r=insert(r,a[i]);printf(&quot;Number of nodes: %d&quot;,count(r));return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Number of nodes: 7</pre><hr>
+</body></html>

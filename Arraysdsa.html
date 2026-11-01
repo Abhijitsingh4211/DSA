@@ -1,0 +1,828 @@
+<html>
+<head>
+    BASIC PROGRAMMING CONSTRUCTS PROGRAM
+</head>
+<body>
+
+    <b>QUESTION 1:-</b><br>
+    <p>Enter an array from user and display all the value ?</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a[100], n, i;
+
+    printf("Enter size of array: ");
+    scanf("%d", &amp;n);
+
+    printf("Enter array elements: ");
+    for(i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;a[i]);
+    }
+
+    printf("Array elements: ");
+    for(i = 0; i &lt; n; i++) {
+        printf("%d ", a[i]);
+    }
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter size of array: 5
+Enter array elements: 10 20 30 40 50
+Array elements: 10 20 30 40 50</pre>
+    <hr>
+
+    <b>QUESTION 2:-</b><br>
+    <p>Enter an array from user and print the array in reverse order ?</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a[100], n, i;
+
+    printf("Enter size of array: ");
+    scanf("%d", &amp;n);
+
+    printf("Enter array elements: ");
+    for(i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;a[i]);
+    }
+
+    printf("Array in reverse order: ");
+    for(i = n - 1; i &gt;= 0; i--) {
+        printf("%d ", a[i]);
+    }
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter size of array: 5
+Enter array elements: 10 20 30 40 50
+Array in reverse order: 50 40 30 20 10</pre>
+    <hr>
+
+    <b>QUESTION 3:-</b><br>
+    <p>Enter an array from user and copy the array into second array?</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a[100], b[100], n, i;
+
+    printf("Enter size of array: ");
+    scanf("%d", &amp;n);
+
+    printf("Enter array elements: ");
+    for(i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;a[i]);
+        b[i] = a[i];
+    }
+
+    printf("Second array: ");
+    for(i = 0; i &lt; n; i++) {
+        printf("%d ", b[i]);
+    }
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter size of array: 5
+Enter array elements: 1 2 3 4 5
+Second array: 1 2 3 4 5</pre>
+    <hr>
+
+    <b>QUESTION 4:-</b><br>
+    <p>Enter an array from user and copy it into another array in reverse order?</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a[100], b[100], n, i;
+
+    printf("Enter size of array: ");
+    scanf("%d", &amp;n);
+
+    printf("Enter array elements: ");
+    for(i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;a[i]);
+    }
+
+    for(i = 0; i &lt; n; i++) {
+        b[i] = a[n - 1 - i];
+    }
+
+    printf("Copied array in reverse order: ");
+    for(i = 0; i &lt; n; i++) {
+        printf("%d ", b[i]);
+    }
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter size of array: 5
+Enter array elements: 1 2 3 4 5
+Copied array in reverse order: 5 4 3 2 1</pre>
+    <hr>
+
+    <b>QUESTION 5:-</b><br>
+    <p>Enter an array from user and print the number which is even ?</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a[100], n, i;
+
+    printf("Enter size of array: ");
+    scanf("%d", &amp;n);
+
+    printf("Enter array elements: ");
+    for(i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;a[i]);
+    }
+
+    printf("Even numbers: ");
+    for(i = 0; i &lt; n; i++) {
+        if(a[i] % 2 == 0) {
+            printf("%d ", a[i]);
+        }
+    }
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter size of array: 5
+Enter array elements: 1 2 3 4 5
+Even numbers: 2 4</pre>
+    <hr>
+
+    <b>QUESTION 6:-</b><br>
+    <p>Enter an array from user and print the number which is positive ?</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a[100], n, i;
+
+    printf("Enter size of array: ");
+    scanf("%d", &amp;n);
+
+    printf("Enter array elements: ");
+    for(i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;a[i]);
+    }
+
+    printf("Positive numbers: ");
+    for(i = 0; i &lt; n; i++) {
+        if(a[i] &gt; 0) {
+            printf("%d ", a[i]);
+        }
+    }
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter size of array: 5
+Enter array elements: -2 5 0 8 -1
+Positive numbers: 5 8</pre>
+    <hr>
+
+    <b>QUESTION 7:-</b><br>
+    <p>Enter an array from user and square all the values of array ?</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a[100], n, i;
+
+    printf("Enter size of array: ");
+    scanf("%d", &amp;n);
+
+    printf("Enter array elements: ");
+    for(i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;a[i]);
+    }
+
+    printf("Squares: ");
+    for(i = 0; i &lt; n; i++) {
+        printf("%d ", a[i] * a[i]);
+    }
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter size of array: 4
+Enter array elements: 2 3 4 5
+Squares: 4 9 16 25</pre>
+    <hr>
+
+    <b>QUESTION 8:-</b><br>
+    <p>Enter an array from user and find maximum and minimum value?</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a[100], n, i, max, min;
+
+    printf("Enter size of array: ");
+    scanf("%d", &amp;n);
+
+    printf("Enter array elements: ");
+    for(i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;a[i]);
+    }
+
+    max = min = a[0];
+
+    for(i = 1; i &lt; n; i++) {
+        if(a[i] &gt; max)
+            max = a[i];
+        if(a[i] &lt; min)
+            min = a[i];
+    }
+
+    printf("Maximum value: %d\n", max);
+    printf("Minimum value: %d", min);
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter size of array: 5
+Enter array elements: 12 5 30 2 18
+Maximum value: 30
+Minimum value: 2</pre>
+    <hr>
+
+    <b>QUESTION 9:-</b><br>
+    <p>Enter an array from user and find the k-th smallest value?</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a[100], n, i, j, temp, k;
+
+    printf("Enter size of array: ");
+    scanf("%d", &amp;n);
+
+    printf("Enter array elements: ");
+    for(i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;a[i]);
+    }
+
+    printf("Enter k: ");
+    scanf("%d", &amp;k);
+
+    if(k &lt; 1 || k &gt; n) {
+        printf("Invalid value of k");
+        return 0;
+    }
+
+    for(i = 0; i &lt; n - 1; i++) {
+        for(j = i + 1; j &lt; n; j++) {
+            if(a[i] &gt; a[j]) {
+                temp = a[i];
+                a[i] = a[j];
+                a[j] = temp;
+            }
+        }
+    }
+
+    printf("%d-th smallest value: %d", k, a[k - 1]);
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter size of array: 5
+Enter array elements: 8 3 6 1 5
+Enter k: 3
+3-th smallest value: 5</pre>
+    <hr>
+
+    <b>QUESTION 10:-</b><br>
+    <p>Enter an array from user and add all values ?</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a[100], n, i, sum = 0;
+
+    printf("Enter size of array: ");
+    scanf("%d", &amp;n);
+
+    printf("Enter array elements: ");
+    for(i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;a[i]);
+        sum = sum + a[i];
+    }
+
+    printf("Sum of array values: %d", sum);
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter size of array: 5
+Enter array elements: 1 2 3 4 5
+Sum of array values: 15</pre>
+    <hr>
+
+    <b>QUESTION 11:-</b><br>
+    <p>Enter an array from user and find the duplicate values?</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a[100], n, i, j, found;
+
+    printf("Enter size of array: ");
+    scanf("%d", &amp;n);
+
+    printf("Enter array elements: ");
+    for(i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;a[i]);
+    }
+
+    printf("Duplicate values: ");
+    for(i = 0; i &lt; n; i++) {
+        found = 0;
+        for(j = 0; j &lt; i; j++) {
+            if(a[i] == a[j]) {
+                found = 1;
+                break;
+            }
+        }
+
+        if(found == 0) {
+            for(j = i + 1; j &lt; n; j++) {
+                if(a[i] == a[j]) {
+                    printf("%d ", a[i]);
+                    break;
+                }
+            }
+        }
+    }
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter size of array: 6
+Enter array elements: 1 2 3 2 4 1
+Duplicate values: 2 1</pre>
+    <hr>
+
+    <b>QUESTION 12:-</b><br>
+    <p>Enter an array from user and remove the duplicate values and fill with zero?</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a[100], b[100], n, i, j, duplicate;
+
+    printf("Enter size of array: ");
+    scanf("%d", &amp;n);
+
+    printf("Enter array elements: ");
+    for(i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;a[i]);
+    }
+
+    for(i = 0; i &lt; n; i++) {
+        b[i] = a[i];
+    }
+
+    for(i = 0; i &lt; n; i++) {
+        duplicate = 0;
+        for(j = 0; j &lt; i; j++) {
+            if(b[i] == b[j]) {
+                duplicate = 1;
+                break;
+            }
+        }
+
+        if(duplicate == 1) {
+            a[i] = 0;
+        }
+    }
+
+    printf("Array after replacing duplicate values with zero: ");
+    for(i = 0; i &lt; n; i++) {
+        printf("%d ", a[i]);
+    }
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter size of array: 6
+Enter array elements: 1 2 3 2 4 1
+Array after replacing duplicate values with zero: 1 2 3 0 4 0</pre>
+    <hr>
+
+    <b>QUESTION 13:-</b><br>
+    <p>Enter an array from user and count the duplicate values?</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a[100], n, i, j, count, alreadyCounted;
+
+    printf("Enter size of array: ");
+    scanf("%d", &amp;n);
+
+    printf("Enter array elements: ");
+    for(i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;a[i]);
+    }
+
+    printf("Duplicate value counts:\n");
+    for(i = 0; i &lt; n; i++) {
+        alreadyCounted = 0;
+        for(j = 0; j &lt; i; j++) {
+            if(a[i] == a[j]) {
+                alreadyCounted = 1;
+                break;
+            }
+        }
+
+        if(alreadyCounted == 0) {
+            count = 0;
+            for(j = 0; j &lt; n; j++) {
+                if(a[i] == a[j]) {
+                    count++;
+                }
+            }
+
+            if(count &gt; 1) {
+                printf("%d occurs %d times\n", a[i], count);
+            }
+        }
+    }
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter size of array: 6
+Enter array elements: 1 2 2 3 1 2
+Duplicate value counts:
+1 occurs 2 times
+2 occurs 3 times</pre>
+    <hr>
+
+    <b>QUESTION 14:-</b><br>
+    <p>Enter an array from user and print all possible combinations of the elements?</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a[20], n, i, mask, total, j;
+
+    printf("Enter size of array (maximum 20): ");
+    scanf("%d", &amp;n);
+
+    if(n &lt; 1 || n &gt; 20) {
+        printf("Invalid array size");
+        return 0;
+    }
+
+    printf("Enter array elements: ");
+    for(i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;a[i]);
+    }
+
+    total = 1 &lt;&lt; n;
+    printf("All possible non-empty combinations:\n");
+
+    for(mask = 1; mask &lt; total; mask++) {
+        for(j = 0; j &lt; n; j++) {
+            if(mask &amp; (1 &lt;&lt; j)) {
+                printf("%d ", a[j]);
+            }
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter size of array (maximum 20): 3
+Enter array elements: 1 2 3
+All possible non-empty combinations:
+1
+2
+1 2
+3
+1 3
+2 3
+1 2 3</pre>
+    <hr>
+
+    <b>QUESTION 15:-</b><br>
+    <p>Enter an array from user and print all the palindrome numbers?</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int isPalindrome(int num) {
+    int original = num, reverse = 0, digit;
+
+    if(num &lt; 0)
+        return 0;
+
+    while(num &gt; 0) {
+        digit = num % 10;
+        reverse = reverse * 10 + digit;
+        num = num / 10;
+    }
+
+    return original == reverse;
+}
+
+int main() {
+    int a[100], n, i;
+
+    printf("Enter size of array: ");
+    scanf("%d", &amp;n);
+
+    printf("Enter array elements: ");
+    for(i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;a[i]);
+    }
+
+    printf("Palindrome numbers: ");
+    for(i = 0; i &lt; n; i++) {
+        if(isPalindrome(a[i])) {
+            printf("%d ", a[i]);
+        }
+    }
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter size of array: 5
+Enter array elements: 121 123 44 56 7
+Palindrome numbers: 121 44 7</pre>
+    <hr>
+
+    <b>QUESTION 16:-</b><br>
+    <p>Enter two arrays from the user and check they are same or not?</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a[100], b[100], n, m, i, same = 1;
+
+    printf("Enter size of first array: ");
+    scanf("%d", &amp;n);
+
+    printf("Enter first array elements: ");
+    for(i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;a[i]);
+    }
+
+    printf("Enter size of second array: ");
+    scanf("%d", &amp;m);
+
+    printf("Enter second array elements: ");
+    for(i = 0; i &lt; m; i++) {
+        scanf("%d", &amp;b[i]);
+    }
+
+    if(n != m) {
+        same = 0;
+    } else {
+        for(i = 0; i &lt; n; i++) {
+            if(a[i] != b[i]) {
+                same = 0;
+                break;
+            }
+        }
+    }
+
+    if(same == 1)
+        printf("Both arrays are same");
+    else
+        printf("Both arrays are not same");
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter size of first array: 3
+Enter first array elements: 1 2 3
+Enter size of second array: 3
+Enter second array elements: 1 2 3
+Both arrays are same</pre>
+    <hr>
+
+    <b>QUESTION 17:-</b><br>
+    <p>Merge the two sorted arrays into one array but in sorted order?</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a[100], b[100], c[200], n, m, i, j, k;
+
+    printf("Enter size of first sorted array: ");
+    scanf("%d", &amp;n);
+
+    printf("Enter first array elements in sorted order: ");
+    for(i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;a[i]);
+    }
+
+    printf("Enter size of second sorted array: ");
+    scanf("%d", &amp;m);
+
+    printf("Enter second array elements in sorted order: ");
+    for(j = 0; j &lt; m; j++) {
+        scanf("%d", &amp;b[j]);
+    }
+
+    i = 0;
+    j = 0;
+    k = 0;
+
+    while(i &lt; n &amp;&amp; j &lt; m) {
+        if(a[i] &lt;= b[j])
+            c[k++] = a[i++];
+        else
+            c[k++] = b[j++];
+    }
+
+    while(i &lt; n)
+        c[k++] = a[i++];
+
+    while(j &lt; m)
+        c[k++] = b[j++];
+
+    printf("Merged sorted array: ");
+    for(i = 0; i &lt; k; i++) {
+        printf("%d ", c[i]);
+    }
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter size of first sorted array: 3
+Enter first array elements in sorted order: 1 4 7
+Enter size of second sorted array: 3
+Enter second array elements in sorted order: 2 3 8
+Merged sorted array: 1 2 3 4 7 8</pre>
+    <hr>
+
+    <b>QUESTION 18:-</b><br>
+    <p>Find the local minima in the array? (An element in an array is a local minima if it less than the element after it, and the element before it)</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a[100], n, i, found = 0;
+
+    printf("Enter size of array: ");
+    scanf("%d", &amp;n);
+
+    printf("Enter array elements: ");
+    for(i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;a[i]);
+    }
+
+    printf("Local minima: ");
+    for(i = 1; i &lt; n - 1; i++) {
+        if(a[i] &lt; a[i - 1] &amp;&amp; a[i] &lt; a[i + 1]) {
+            printf("%d ", a[i]);
+            found = 1;
+        }
+    }
+
+    if(found == 0)
+        printf("No local minima found");
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter size of array: 5
+Enter array elements: 9 6 3 7 8
+Local minima: 3</pre>
+    <hr>
+
+    <b>QUESTION 19:-</b><br>
+    <p>Find the local maxima in the array? (An element in an array is a local maxima if it greater than the element after it, and the element before it)</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a[100], n, i, found = 0;
+
+    printf("Enter size of array: ");
+    scanf("%d", &amp;n);
+
+    printf("Enter array elements: ");
+    for(i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;a[i]);
+    }
+
+    printf("Local maxima: ");
+    for(i = 1; i &lt; n - 1; i++) {
+        if(a[i] &gt; a[i - 1] &amp;&amp; a[i] &gt; a[i + 1]) {
+            printf("%d ", a[i]);
+            found = 1;
+        }
+    }
+
+    if(found == 0)
+        printf("No local maxima found");
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter size of array: 5
+Enter array elements: 1 5 2 8 3
+Local maxima: 5 8</pre>
+    <hr>
+
+    <b>QUESTION 20:-</b><br>
+    <p>Trapping Rain Water Problem: Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.</p><br>
+    <b>ANSWER:-</b><br>
+    <pre>
+#include &lt;stdio.h&gt;
+
+int main() {
+    int height[100], n, left, right, leftMax = 0, rightMax = 0;
+    int water = 0;
+
+    printf("Enter number of bars: ");
+    scanf("%d", &amp;n);
+
+    printf("Enter bar heights: ");
+    for(int i = 0; i &lt; n; i++) {
+        scanf("%d", &amp;height[i]);
+    }
+
+    left = 0;
+    right = n - 1;
+
+    while(left &lt; right) {
+        if(height[left] &lt; height[right]) {
+            if(height[left] &gt;= leftMax)
+                leftMax = height[left];
+            else
+                water += leftMax - height[left];
+
+            left++;
+        } else {
+            if(height[right] &gt;= rightMax)
+                rightMax = height[right];
+            else
+                water += rightMax - height[right];
+
+            right--;
+        }
+    }
+
+    printf("Trapped rain water: %d", water);
+
+    return 0;
+}
+    </pre>
+    <b>OUTPUT:-</b><br>
+    <pre>Enter number of bars: 6
+Enter bar heights: 0 1 0 2 1 0
+Trapped rain water: 1</pre>
+    <hr>
+
+</body>
+</html>

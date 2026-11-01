@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECURSION</title>
+</head>
+<body>
+<div class="container">
+<h1>RECURSION PROGRAMS IN C</h1>
+
+<section class="question">
+<h2>1. CALCULATE FACTORIAL OF A NUMBER USING RECURSION</h2>
+<h3>QUESTION</h3>
+<p>Write a C program to calculate the factorial of a number using recursion.</p>
+<h3>ANSWER</h3>
+<pre><code>#include &lt;stdio.h&gt;
+
+int factorial(int n)
+{
+    if (n == 0 || n == 1)
+        return 1;
+    return n * factorial(n - 1);
+}
+
+int main()
+{
+    int n;
+    printf("Enter a number: ");
+    scanf("%d", &amp;n);
+
+    if (n &lt; 0)
+        printf("Factorial is not defined for negative numbers.");
+    else
+        printf("Factorial = %d", factorial(n));
+
+    return 0;
+}</code></pre>
+<h3>OUTPUT</h3>
+<pre class="output">Enter a number: 5
+Factorial = 120</pre>
+<p class="note">Time complexity: O(n). The function makes one recursive call for each number down to 1.</p>
+</section>
+
+<section class="question">
+<h2>2. CALCULATE FIBONACCI OF A NUMBER USING RECURSION</h2>
+<h3>QUESTION</h3>
+<p>Write a C program to print the Fibonacci series for the number of terms entered by the user, using recursion.</p>
+<h3>ANSWER</h3>
+<pre><code>#include &lt;stdio.h&gt;
+
+int fibonacci(int n)
+{
+    if (n == 0)
+        return 0;
+    if (n == 1)
+        return 1;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+int main()
+{
+    int n, i;
+    printf("Enter number of terms: ");
+    scanf("%d", &amp;n);
+
+    if (n &lt;= 0)
+        printf("Please enter a positive number.");
+    else
+    {
+        printf("Fibonacci series: ");
+        for (i = 0; i &lt; n; i++)
+            printf("%d ", fibonacci(i));
+    }
+
+    return 0;
+}</code></pre>
+<h3>OUTPUT</h3>
+<pre class="output">Enter number of terms: 7
+Fibonacci series: 0 1 1 2 3 5 8</pre>
+<p class="note">Time complexity: O(2^n) for this simple recursive method when generating terms up to n. It is suitable for small inputs.</p>
+</section>
+
+<section class="question">
+<h2>3. CALCULATE THE SUM OF NATURAL NUMBERS TILL 10 USING RECURSION</h2>
+<h3>QUESTION</h3>
+<p>Write a C program to calculate the sum of natural numbers from 1 to 10 using recursion.</p>
+<h3>ANSWER</h3>
+<pre><code>#include &lt;stdio.h&gt;
+
+int sum(int n)
+{
+    if (n == 0)
+        return 0;
+    return n + sum(n - 1);
+}
+
+int main()
+{
+    printf("Sum of natural numbers from 1 to 10 = %d", sum(10));
+    return 0;
+}</code></pre>
+<h3>OUTPUT</h3>
+<pre class="output">Sum of natural numbers from 1 to 10 = 55</pre>
+<p class="note">Time complexity: O(n), where n is 10 in this program.</p>
+</section>
+
+<section class="question">
+<h2>4. CONVERT A NUMBER INTO BINARY USING RECURSION</h2>
+<h3>QUESTION</h3>
+<p>Write a C program to convert a non-negative decimal number into binary using recursion.</p>
+<h3>ANSWER</h3>
+<pre><code>#include &lt;stdio.h&gt;
+
+void binary(int n)
+{
+    if (n &gt; 1)
+        binary(n / 2);
+
+    printf("%d", n % 2);
+}
+
+int main()
+{
+    int n;
+    printf("Enter a non-negative number: ");
+    scanf("%d", &amp;n);
+
+    if (n &lt; 0)
+        printf("Please enter a non-negative number.");
+    else
+    {
+        printf("Binary = ");
+        binary(n);
+    }
+
+    return 0;
+}</code></pre>
+<h3>OUTPUT</h3>
+<pre class="output">Enter a non-negative number: 13
+Binary = 1101</pre>
+<p class="note">Time complexity: O(log n) for n greater than 0, because the number is divided by 2 in each call.</p>
+</section>
+
+<section class="question">
+<h2>5. FIND THE LARGEST ELEMENT IN THE INTEGER ARRAY USING RECURSION</h2>
+<h3>QUESTION</h3>
+<p>Write a C program to find the largest element of an integer array using recursion.</p>
+<h3>ANSWER</h3>
+<pre><code>#include &lt;stdio.h&gt;
+
+int largest(int a[], int n)
+{
+    int max;
+
+    if (n == 1)
+        return a[0];
+
+    max = largest(a, n - 1);
+
+    if (a[n - 1] &gt; max)
+        return a[n - 1];
+
+    return max;
+}
+
+int main()
+{
+    int a[100], n, i;
+
+    printf("Enter number of elements: ");
+    scanf("%d", &amp;n);
+
+    if (n &lt; 1 || n &gt; 100)
+    {
+        printf("Enter a size between 1 and 100.");
+        return 0;
+    }
+
+    printf("Enter array elements: ");
+    for (i = 0; i &lt; n; i++)
+        scanf("%d", &amp;a[i]);
+
+    printf("Largest element = %d", largest(a, n));
+    return 0;
+}</code></pre>
+<h3>OUTPUT</h3>
+<pre class="output">Enter number of elements: 5
+Enter array elements: 12 45 7 89 23
+Largest element = 89</pre>
+<p class="note">Time complexity: O(n), because each array element is checked once.</p>
+</section>
+
+<section class="question">
+<h2>6. FIND THE SMALLEST ELEMENT IN THE INTEGER ARRAY USING RECURSION</h2>
+<h3>QUESTION</h3>
+<p>Write a C program to find the smallest element of an integer array using recursion.</p>
+<h3>ANSWER</h3>
+<pre><code>#include &lt;stdio.h&gt;
+
+int smallest(int a[], int n)
+{
+    int min;
+
+    if (n == 1)
+        return a[0];
+
+    min = smallest(a, n - 1);
+
+    if (a[n - 1] &lt; min)
+        return a[n - 1];
+
+    return min;
+}
+
+int main()
+{
+    int a[100], n, i;
+
+    printf("Enter number of elements: ");
+    scanf("%d", &amp;n);
+
+    if (n &lt; 1 || n &gt; 100)
+    {
+        printf("Enter a size between 1 and 100.");
+        return 0;
+    }
+
+    printf("Enter array elements: ");
+    for (i = 0; i &lt; n; i++)
+        scanf("%d", &amp;a[i]);
+
+    printf("Smallest element = %d", smallest(a, n));
+    return 0;
+}</code></pre>
+<h3>OUTPUT</h3>
+<pre class="output">Enter number of elements: 5
+Enter array elements: 12 45 7 89 23
+Smallest element = 7</pre>
+<p class="note">Time complexity: O(n), because each array element is checked once.</p>
+</section>
+
+<section class="question">
+<h2>7. ENTER THE NUMBER FROM THE USER AND ADD ALL DIGITS OF THE NUMBER USING RECURSION</h2>
+<h3>QUESTION</h3>
+<p>Write a C program to find the sum of all digits of a number using recursion.</p>
+<h3>ANSWER</h3>
+<pre><code>#include &lt;stdio.h&gt;
+
+int digitSum(int n)
+{
+    if (n == 0)
+        return 0;
+
+    return (n % 10) + digitSum(n / 10);
+}
+
+int main()
+{
+    int n;
+    printf("Enter a number: ");
+    scanf("%d", &amp;n);
+
+    if (n &lt; 0)
+        n = -n;
+
+    printf("Sum of digits = %d", digitSum(n));
+    return 0;
+}</code></pre>
+<h3>OUTPUT</h3>
+<pre class="output">Enter a number: 4562
+Sum of digits = 17</pre>
+<p class="note">Time complexity: O(d), where d is the number of digits.</p>
+</section>
+
+<section class="question">
+<h2>8. FIND THE ARITHMETIC MEAN OF AN INTEGER ARRAY USING RECURSION</h2>
+<h3>QUESTION</h3>
+<p>Write a C program to calculate the arithmetic mean of an integer array using recursion.</p>
+<h3>ANSWER</h3>
+<pre><code>#include &lt;stdio.h&gt;
+
+int arraySum(int a[], int n)
+{
+    if (n == 0)
+        return 0;
+
+    return a[n - 1] + arraySum(a, n - 1);
+}
+
+int main()
+{
+    int a[100], n, i, total;
+    float mean;
+
+    printf("Enter number of elements: ");
+    scanf("%d", &amp;n);
+
+    if (n &lt; 1 || n &gt; 100)
+    {
+        printf("Enter a size between 1 and 100.");
+        return 0;
+    }
+
+    printf("Enter array elements: ");
+    for (i = 0; i &lt; n; i++)
+        scanf("%d", &amp;a[i]);
+
+    total = arraySum(a, n);
+    mean = (float) total / n;
+
+    printf("Arithmetic mean = %.2f", mean);
+    return 0;
+}</code></pre>
+<h3>OUTPUT</h3>
+<pre class="output">Enter number of elements: 5
+Enter array elements: 10 20 30 40 50
+Arithmetic mean = 30.00</pre>
+<p class="note">Time complexity: O(n), because the recursive sum visits each element once. The mean is the total sum divided by the number of elements.</p>
+</section>
+
+</div>
+</body>
+</html>

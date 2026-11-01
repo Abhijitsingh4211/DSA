@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<title>SORTING ALGORITHMS</title>
+</head><body>
+<b>QUESTION 1:-</b><br><p>INTEGER ARRAY - SELECTION SORT THROUGH ITERATION</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+int main() {
+    int n, a[100], i, j, min, temp;
+    printf(&quot;Enter number of elements: &quot;); scanf(&quot;%d&quot;, &amp;n);
+    printf(&quot;Enter elements: &quot;);
+    for(i=0;i&lt;n;i++) scanf(&quot;%d&quot;,&amp;a[i]);
+    for(i=0;i&lt;n-1;i++) {
+        min=i;
+        for(j=i+1;j&lt;n;j++)
+            if(a[j]&lt;a[min]) min=j;
+        temp=a[i]; a[i]=a[min]; a[min]=temp;
+    }
+    printf(&quot;Sorted array: &quot;);
+    for(i=0;i&lt;n;i++) printf(&quot;%d &quot;,a[i]);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br><pre>Enter number of elements: 5
+Enter elements: 64 25 12 22 11
+Sorted array: 11 12 22 25 64</pre>
+<b>BEST AND WORST COMPLEXITY:-</b><div class="complexity">Comparisons: exactly n(n-1)/2 in both best and worst cases. Best and worst time: Θ(n²). Swaps: at most n-1. Space: O(1).</div><hr>
+<b>QUESTION 2:-</b><br><p>INTEGER ARRAY - SELECTION SORT THROUGH RECURSION</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+void selection(int a[], int n, int start) {
+    if(start&gt;=n-1) return;
+    int min=start, j, temp;
+    for(j=start+1;j&lt;n;j++) if(a[j]&lt;a[min]) min=j;
+    temp=a[start]; a[start]=a[min]; a[min]=temp;
+    selection(a,n,start+1);
+}
+int main() {
+    int n,a[100],i;
+    printf(&quot;Enter number of elements: &quot;); scanf(&quot;%d&quot;,&amp;n);
+    printf(&quot;Enter elements: &quot;);
+    for(i=0;i&lt;n;i++) scanf(&quot;%d&quot;,&amp;a[i]);
+    selection(a,n,0);
+    printf(&quot;Sorted array: &quot;);
+    for(i=0;i&lt;n;i++) printf(&quot;%d &quot;,a[i]);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br><pre>Enter number of elements: 5
+Enter elements: 64 25 12 22 11
+Sorted array: 11 12 22 25 64</pre>
+<b>BEST AND WORST COMPLEXITY:-</b><div class="complexity">Comparisons: exactly n(n-1)/2 in both best and worst cases. Best and worst time: Θ(n²). Recursive call depth: O(n); auxiliary space: O(n).</div><hr>
+<b>QUESTION 3:-</b><br><p>INTEGER ARRAY - BUBBLE SORT THROUGH ITERATION</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+int main() {
+    int n,a[100],i,j,temp,swapped;
+    printf(&quot;Enter number of elements: &quot;); scanf(&quot;%d&quot;,&amp;n);
+    printf(&quot;Enter elements: &quot;);
+    for(i=0;i&lt;n;i++) scanf(&quot;%d&quot;,&amp;a[i]);
+    for(i=0;i&lt;n-1;i++) {
+        swapped=0;
+        for(j=0;j&lt;n-1-i;j++) {
+            if(a[j]&gt;a[j+1]) {
+                temp=a[j];a[j]=a[j+1];a[j+1]=temp;
+                swapped=1;
+            }
+        }
+        if(!swapped) break;
+    }
+    printf(&quot;Sorted array: &quot;);
+    for(i=0;i&lt;n;i++) printf(&quot;%d &quot;,a[i]);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br><pre>Enter number of elements: 5
+Enter elements: 5 1 4 2 8
+Sorted array: 1 2 4 5 8</pre>
+<b>BEST AND WORST COMPLEXITY:-</b><div class="complexity">With the swapped-flag optimization: best comparisons = n-1 and best time = Θ(n). Worst comparisons = n(n-1)/2 and worst time = Θ(n²). Space: O(1).</div><hr>
+<b>QUESTION 4:-</b><br><p>INTEGER ARRAY - BUBBLE SORT THROUGH RECURSION</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+void bubble(int a[],int n) {
+    if(n&lt;=1) return;
+    int i,temp,swapped=0;
+    for(i=0;i&lt;n-1;i++) if(a[i]&gt;a[i+1]) {
+        temp=a[i];a[i]=a[i+1];a[i+1]=temp;swapped=1;
+    }
+    if(swapped) bubble(a,n-1);
+}
+int main() {
+    int n,a[100],i;
+    printf(&quot;Enter number of elements: &quot;);scanf(&quot;%d&quot;,&amp;n);
+    printf(&quot;Enter elements: &quot;);for(i=0;i&lt;n;i++)scanf(&quot;%d&quot;,&amp;a[i]);
+    bubble(a,n);
+    printf(&quot;Sorted array: &quot;);for(i=0;i&lt;n;i++)printf(&quot;%d &quot;,a[i]);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br><pre>Enter number of elements: 5
+Enter elements: 5 1 4 2 8
+Sorted array: 1 2 4 5 8</pre>
+<b>BEST AND WORST COMPLEXITY:-</b><div class="complexity">Best case (already sorted): n-1 comparisons, Θ(n). Worst case: n(n-1)/2 comparisons, Θ(n²). This recursive version stops early if no swap occurs. Recursive call depth: O(n).</div><hr>
+<b>QUESTION 5:-</b><br><p>INTEGER ARRAY - INSERTION SORT THROUGH ITERATION</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+int main() {
+    int n,a[100],i,j,key;
+    printf(&quot;Enter number of elements: &quot;);scanf(&quot;%d&quot;,&amp;n);
+    printf(&quot;Enter elements: &quot;);for(i=0;i&lt;n;i++)scanf(&quot;%d&quot;,&amp;a[i]);
+    for(i=1;i&lt;n;i++) {
+        key=a[i];j=i-1;
+        while(j&gt;=0 &amp;&amp; a[j]&gt;key){a[j+1]=a[j];j--;}
+        a[j+1]=key;
+    }
+    printf(&quot;Sorted array: &quot;);for(i=0;i&lt;n;i++)printf(&quot;%d &quot;,a[i]);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br><pre>Enter number of elements: 5
+Enter elements: 12 11 13 5 6
+Sorted array: 5 6 11 12 13</pre>
+<b>BEST AND WORST COMPLEXITY:-</b><div class="complexity">Best comparisons = n-1, Θ(n). Worst comparisons = n(n-1)/2, Θ(n²). Worst shifts = n(n-1)/2. Space: O(1).</div><hr>
+<b>QUESTION 6:-</b><br><p>INTEGER ARRAY - INSERTION SORT THROUGH RECURSION</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+void insertion(int a[],int n) {
+    if(n&lt;=1) return;
+    insertion(a,n-1);
+    int key=a[n-1],j=n-2;
+    while(j&gt;=0 &amp;&amp; a[j]&gt;key){a[j+1]=a[j];j--;}
+    a[j+1]=key;
+}
+int main() {
+    int n,a[100],i;
+    printf(&quot;Enter number of elements: &quot;);scanf(&quot;%d&quot;,&amp;n);
+    printf(&quot;Enter elements: &quot;);for(i=0;i&lt;n;i++)scanf(&quot;%d&quot;,&amp;a[i]);
+    insertion(a,n);
+    printf(&quot;Sorted array: &quot;);for(i=0;i&lt;n;i++)printf(&quot;%d &quot;,a[i]);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br><pre>Enter number of elements: 5
+Enter elements: 12 11 13 5 6
+Sorted array: 5 6 11 12 13</pre>
+<b>BEST AND WORST COMPLEXITY:-</b><div class="complexity">Best comparisons = n-1, Θ(n). Worst comparisons = n(n-1)/2, Θ(n²). Recursive call depth and auxiliary space: O(n).</div><hr>
+<b>QUESTION 7:-</b><br><p>INTEGER ARRAY - MERGE SORT THROUGH RECURSION</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+int a[100], temp[100];
+void merge(int l,int m,int r) {
+    int i=l,j=m+1,k=l;
+    while(i&lt;=m &amp;&amp; j&lt;=r) temp[k++]=(a[i]&lt;=a[j])?a[i++]:a[j++];
+    while(i&lt;=m) temp[k++]=a[i++];
+    while(j&lt;=r) temp[k++]=a[j++];
+    for(i=l;i&lt;=r;i++) a[i]=temp[i];
+}
+void mergeSort(int l,int r) {
+    if(l&gt;=r)return;
+    int m=(l+r)/2;
+    mergeSort(l,m);mergeSort(m+1,r);merge(l,m,r);
+}
+int main() {
+    int n,i;printf(&quot;Enter number of elements: &quot;);scanf(&quot;%d&quot;,&amp;n);
+    printf(&quot;Enter elements: &quot;);for(i=0;i&lt;n;i++)scanf(&quot;%d&quot;,&amp;a[i]);
+    mergeSort(0,n-1);
+    printf(&quot;Sorted array: &quot;);for(i=0;i&lt;n;i++)printf(&quot;%d &quot;,a[i]);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br><pre>Enter number of elements: 6
+Enter elements: 38 27 43 3 9 82
+Sorted array: 3 9 27 38 43 82</pre>
+<b>BEST AND WORST COMPLEXITY:-</b><div class="complexity">Best and worst time: Θ(n log₂ n). Merge comparisons vary with data; per merge they are at most the number of elements merged minus one. Auxiliary array: O(n); recursion stack: O(log n).</div><hr>
+<b>QUESTION 8:-</b><br><p>INTEGER ARRAY - MERGE SORT THROUGH ITERATION</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+int main() {
+    int a[100],t[100],n,i,w,l,m,r,x,y,k;
+    printf(&quot;Enter number of elements: &quot;);scanf(&quot;%d&quot;,&amp;n);
+    printf(&quot;Enter elements: &quot;);for(i=0;i&lt;n;i++)scanf(&quot;%d&quot;,&amp;a[i]);
+    for(w=1;w&lt;n;w*=2) {
+        for(l=0;l&lt;n;l+=2*w) {
+            m=l+w-1;r=l+2*w-1;if(m&gt;=n)m=n-1;if(r&gt;=n)r=n-1;
+            x=l;y=m+1;k=l;
+            while(x&lt;=m&amp;&amp;y&lt;=r)t[k++]=(a[x]&lt;=a[y])?a[x++]:a[y++];
+            while(x&lt;=m)t[k++]=a[x++];
+            while(y&lt;=r)t[k++]=a[y++];
+        }
+        for(i=0;i&lt;n;i++)a[i]=t[i];
+    }
+    printf(&quot;Sorted array: &quot;);for(i=0;i&lt;n;i++)printf(&quot;%d &quot;,a[i]);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br><pre>Enter number of elements: 6
+Enter elements: 38 27 43 3 9 82
+Sorted array: 3 9 27 38 43 82</pre>
+<b>BEST AND WORST COMPLEXITY:-</b><div class="complexity">Best and worst time: Θ(n log₂ n). Merge comparisons depend on input order, with at most n-1 comparisons for a merge of n items. Auxiliary array: O(n); iterative control space: O(1).</div><hr>
+<b>QUESTION 9:-</b><br><p>INTEGER ARRAY - QUICK SORT THROUGH RECURSION</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+void quick(int a[],int low,int high) {
+    if(low&gt;=high)return;
+    int pivot=a[high],i=low-1,j,temp;
+    for(j=low;j&lt;high;j++)if(a[j]&lt;=pivot){i++;temp=a[i];a[i]=a[j];a[j]=temp;}
+    temp=a[i+1];a[i+1]=a[high];a[high]=temp;
+    int p=i+1;quick(a,low,p-1);quick(a,p+1,high);
+}
+int main(){int n,a[100],i;printf(&quot;Enter number of elements: &quot;);scanf(&quot;%d&quot;,&amp;n);
+printf(&quot;Enter elements: &quot;);for(i=0;i&lt;n;i++)scanf(&quot;%d&quot;,&amp;a[i]);quick(a,0,n-1);
+printf(&quot;Sorted array: &quot;);for(i=0;i&lt;n;i++)printf(&quot;%d &quot;,a[i]);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Enter number of elements: 6
+Enter elements: 10 7 8 9 1 5
+Sorted array: 1 5 7 8 9 10</pre>
+<b>BEST AND WORST COMPLEXITY:-</b><div class="complexity">With last-element pivot: best Θ(n log₂ n); worst Θ(n²), with worst partition comparisons n(n-1)/2. Recursion stack: average O(log n), worst O(n).</div><hr>
+<b>QUESTION 10:-</b><br><p>INTEGER ARRAY - QUICK SORT THROUGH ITERATION</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+void quick(int a[],int n) {
+    int low[100],high[100],top=-1;
+    if(n&lt;=1)return;low[++top]=0;high[top]=n-1;
+    while(top&gt;=0) {
+        int l=low[top],h=high[top--],pivot=a[h],i=l-1,j,temp;
+        for(j=l;j&lt;h;j++)if(a[j]&lt;=pivot){i++;temp=a[i];a[i]=a[j];a[j]=temp;}
+        temp=a[i+1];a[i+1]=a[h];a[h]=temp;int p=i+1;
+        if(p-1&gt;l){low[++top]=l;high[top]=p-1;}
+        if(p+1&lt;h){low[++top]=p+1;high[top]=h;}
+    }
+}
+int main(){int n,a[100],i;printf(&quot;Enter number of elements: &quot;);scanf(&quot;%d&quot;,&amp;n);
+printf(&quot;Enter elements: &quot;);for(i=0;i&lt;n;i++)scanf(&quot;%d&quot;,&amp;a[i]);quick(a,n);
+printf(&quot;Sorted array: &quot;);for(i=0;i&lt;n;i++)printf(&quot;%d &quot;,a[i]);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Enter number of elements: 6
+Enter elements: 10 7 8 9 1 5
+Sorted array: 1 5 7 8 9 10</pre>
+<b>BEST AND WORST COMPLEXITY:-</b><div class="complexity">Best Θ(n log₂ n); worst Θ(n²), worst partition comparisons n(n-1)/2. Explicit stack uses O(log n) average and O(n) worst space.</div><hr>
+<b>QUESTION 11:-</b><br><p>STRING ARRAY - SELECTION SORT THROUGH ITERATION</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#define MAX 100
+#define LEN 50
+void sort(char a[][LEN], int n) {
+
+    int i,j,min;char temp[LEN];
+    for(i=0;i&lt;n-1;i++){
+        min=i;
+        for(j=i+1;j&lt;n;j++)if(strcmp(a[j],a[min])&lt;0)min=j;
+        strcpy(temp,a[i]);strcpy(a[i],a[min]);strcpy(a[min],temp);
+    }
+}
+int main() {
+    int n,i; char a[MAX][LEN];
+    printf(&quot;Enter number of strings: &quot;);scanf(&quot;%d&quot;,&amp;n);
+    printf(&quot;Enter strings (single words): &quot;);
+    for(i=0;i&lt;n;i++)scanf(&quot;%49s&quot;,a[i]);
+    sort(a,n);
+    printf(&quot;Sorted strings: &quot;);
+    for(i=0;i&lt;n;i++)printf(&quot;%s &quot;,a[i]);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br><pre>Enter number of strings: 5
+Enter strings: mango apple orange banana grape
+Sorted strings: apple banana grape mango orange</pre>
+<b>BEST AND WORST COMPLEXITY:-</b><div class="complexity">Exactly n(n-1)/2 string comparisons in best and worst cases. Best and worst time: Θ(n²) comparisons; each strcmp can inspect up to L characters (maximum word length).</div><hr>
+<b>QUESTION 12:-</b><br><p>STRING ARRAY - SELECTION SORT THROUGH RECURSION</p><br>
+<b>ANSWER:-</b><br><pre>
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#define MAX 100
+#define LEN 50
+void selection(char a[][LEN],int n,int start){
+    if(start&gt;=n-1)return;
+    int min=start,j;char temp[LEN];
+    for(j=start+1;j&lt;n;j++)if(strcmp(a[j],a[min])&lt;0)min=j;
+    strcpy(temp,a[start]);strcpy(a[start],a[min]);strcpy(a[min],temp);
+    selection(a,n,start+1);
+}
+int main(){int n,i;char a[MAX][LEN];printf(&quot;Enter number of strings: &quot;);scanf(&quot;%d&quot;,&amp;n);
+printf(&quot;Enter strings (single words): &quot;);for(i=0;i&lt;n;i++)scanf(&quot;%49s&quot;,a[i]);
+selection(a,n,0);printf(&quot;Sorted strings: &quot;);for(i=0;i&lt;n;i++)printf(&quot;%s &quot;,a[i]);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Enter number of strings: 5
+Enter strings: mango apple orange banana grape
+Sorted strings: apple banana grape mango orange</pre>
+<b>BEST AND WORST COMPLEXITY:-</b><div class="complexity">Exactly n(n-1)/2 string comparisons in best and worst cases. Best and worst time: Θ(n²) comparisons. Recursive depth: O(n). strcmp cost depends on string length.</div><hr>
+<b>QUESTION 13:-</b><br><p>STRING ARRAY - BUBBLE SORT THROUGH ITERATION</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#define MAX 100
+#define LEN 50
+void sort(char a[][LEN], int n) {
+
+    int i,j,swapped;char temp[LEN];
+    for(i=0;i&lt;n-1;i++){
+        swapped=0;
+        for(j=0;j&lt;n-1-i;j++)if(strcmp(a[j],a[j+1])&gt;0){
+            strcpy(temp,a[j]);strcpy(a[j],a[j+1]);strcpy(a[j+1],temp);swapped=1;
+        }
+        if(!swapped)break;
+    }
+}
+int main() {
+    int n,i; char a[MAX][LEN];
+    printf(&quot;Enter number of strings: &quot;);scanf(&quot;%d&quot;,&amp;n);
+    printf(&quot;Enter strings (single words): &quot;);
+    for(i=0;i&lt;n;i++)scanf(&quot;%49s&quot;,a[i]);
+    sort(a,n);
+    printf(&quot;Sorted strings: &quot;);
+    for(i=0;i&lt;n;i++)printf(&quot;%s &quot;,a[i]);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br><pre>Enter number of strings: 5
+Enter strings: mango apple orange banana grape
+Sorted strings: apple banana grape mango orange</pre>
+<b>BEST AND WORST COMPLEXITY:-</b><div class="complexity">Optimized best: n-1 string comparisons, Θ(n). Worst: n(n-1)/2 comparisons, Θ(n²). Each strcmp may take O(L) character checks.</div><hr>
+<b>QUESTION 14:-</b><br><p>STRING ARRAY - BUBBLE SORT THROUGH RECURSION</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#define MAX 100
+#define LEN 50
+void bubble(char a[][LEN],int n){
+    if(n&lt;=1)return;
+    int i,swapped=0;char temp[LEN];
+    for(i=0;i&lt;n-1;i++)if(strcmp(a[i],a[i+1])&gt;0){
+        strcpy(temp,a[i]);strcpy(a[i],a[i+1]);strcpy(a[i+1],temp);swapped=1;
+    }
+    if(swapped)bubble(a,n-1);
+}
+int main(){int n,i;char a[MAX][LEN];printf(&quot;Enter number of strings: &quot;);scanf(&quot;%d&quot;,&amp;n);
+printf(&quot;Enter strings (single words): &quot;);for(i=0;i&lt;n;i++)scanf(&quot;%49s&quot;,a[i]);
+bubble(a,n);printf(&quot;Sorted strings: &quot;);for(i=0;i&lt;n;i++)printf(&quot;%s &quot;,a[i]);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Enter number of strings: 5
+Enter strings: mango apple orange banana grape
+Sorted strings: apple banana grape mango orange</pre>
+<b>BEST AND WORST COMPLEXITY:-</b><div class="complexity">Best: n-1 string comparisons, Θ(n). Worst: n(n-1)/2 comparisons, Θ(n²). Recursive depth: O(n); strcmp cost depends on string length.</div><hr>
+<b>QUESTION 15:-</b><br><p>STRING ARRAY - INSERTION SORT THROUGH ITERATION</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#define MAX 100
+#define LEN 50
+void sort(char a[][LEN], int n) {
+
+    int i,j;char key[LEN];
+    for(i=1;i&lt;n;i++){
+        strcpy(key,a[i]);j=i-1;
+        while(j&gt;=0&amp;&amp;strcmp(a[j],key)&gt;0){strcpy(a[j+1],a[j]);j--;}
+        strcpy(a[j+1],key);
+    }
+}
+int main() {
+    int n,i; char a[MAX][LEN];
+    printf(&quot;Enter number of strings: &quot;);scanf(&quot;%d&quot;,&amp;n);
+    printf(&quot;Enter strings (single words): &quot;);
+    for(i=0;i&lt;n;i++)scanf(&quot;%49s&quot;,a[i]);
+    sort(a,n);
+    printf(&quot;Sorted strings: &quot;);
+    for(i=0;i&lt;n;i++)printf(&quot;%s &quot;,a[i]);
+    return 0;
+}</pre>
+<b>OUTPUT:-</b><br><pre>Enter number of strings: 5
+Enter strings: mango apple orange banana grape
+Sorted strings: apple banana grape mango orange</pre>
+<b>BEST AND WORST COMPLEXITY:-</b><div class="complexity">Best: n-1 comparisons, Θ(n). Worst: n(n-1)/2 comparisons, Θ(n²). String comparisons may inspect up to L characters.</div><hr>
+<b>QUESTION 16:-</b><br><p>STRING ARRAY - INSERTION SORT THROUGH RECURSION</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#define MAX 100
+#define LEN 50
+void insertion(char a[][LEN],int n){
+    if(n&lt;=1)return;
+    insertion(a,n-1);
+    char key[LEN];strcpy(key,a[n-1]);int j=n-2;
+    while(j&gt;=0&amp;&amp;strcmp(a[j],key)&gt;0){strcpy(a[j+1],a[j]);j--;}
+    strcpy(a[j+1],key);
+}
+int main(){int n,i;char a[MAX][LEN];printf(&quot;Enter number of strings: &quot;);scanf(&quot;%d&quot;,&amp;n);
+printf(&quot;Enter strings (single words): &quot;);for(i=0;i&lt;n;i++)scanf(&quot;%49s&quot;,a[i]);
+insertion(a,n);printf(&quot;Sorted strings: &quot;);for(i=0;i&lt;n;i++)printf(&quot;%s &quot;,a[i]);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Enter number of strings: 5
+Enter strings: mango apple orange banana grape
+Sorted strings: apple banana grape mango orange</pre>
+<b>BEST AND WORST COMPLEXITY:-</b><div class="complexity">Best: n-1 comparisons, Θ(n). Worst: n(n-1)/2 comparisons, Θ(n²). Recursive depth: O(n); string comparison cost depends on length.</div><hr>
+<b>QUESTION 17:-</b><br><p>STRING ARRAY - MERGE SORT THROUGH RECURSION</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#define MAX 100
+#define LEN 50
+char a[MAX][LEN],temp[MAX][LEN];
+void merge(int l,int m,int r){
+    int i=l,j=m+1,k=l;
+    while(i&lt;=m&amp;&amp;j&lt;=r)strcpy(temp[k++],strcmp(a[i],a[j])&lt;=0?a[i++]:a[j++]);
+    while(i&lt;=m)strcpy(temp[k++],a[i++]);
+    while(j&lt;=r)strcpy(temp[k++],a[j++]);
+    for(i=l;i&lt;=r;i++)strcpy(a[i],temp[i]);
+}
+void mergeSort(int l,int r){
+    if(l&gt;=r)return;int m=(l+r)/2;
+    mergeSort(l,m);mergeSort(m+1,r);merge(l,m,r);
+}
+int main(){int n,i;printf(&quot;Enter number of strings: &quot;);scanf(&quot;%d&quot;,&amp;n);
+printf(&quot;Enter strings (single words): &quot;);for(i=0;i&lt;n;i++)scanf(&quot;%49s&quot;,a[i]);
+mergeSort(0,n-1);printf(&quot;Sorted strings: &quot;);for(i=0;i&lt;n;i++)printf(&quot;%s &quot;,a[i]);return 0;}</pre>
+<b>OUTPUT:-</b><br><pre>Enter number of strings: 5
+Enter strings: mango apple orange banana grape
+Sorted strings: apple banana grape mango orange</pre>
+<b>BEST AND WORST COMPLEXITY:-</b><div class="complexity">Best and worst time: Θ(n log₂ n) string comparisons. Exact comparisons depend on data; each strcmp may inspect up to L characters. Auxiliary storage: O(nL); recursion stack: O(log n).</div><hr>
+<b>QUESTION 18:-</b><br><p>STRING ARRAY - MERGE SORT THROUGH ITERATION</p><br>
+<b>ANSWER:-</b><br><pre>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#define MAX 100
+#define LEN 50
+int main(){
+    char a[MAX][LEN],t[MAX][LEN];int n,w,l,m,r,x,y,k,i;
+    printf(&quot;Enter number of strings: &quot;);scanf(&quot;%d&quot;,&amp;n);
+    printf(&quot;Enter strings (single words): &quot;);for(i=0;i&lt;n;i++)scanf(&quot;%49s&quot;,a[i]);
+    for(w=1;w&lt;n;w*=2){
+        for(l=0;l&lt;n;l+=2*w){
+            m=l+w-1;r=l+2*w-1;if(m&gt;=n)m=n-1;if(r&gt;=n)r=n-1;
+            x=l;y=m+1;k=l;
+            while(x&lt;=m&amp;&amp;y&lt;=r){if(strcmp(a[x],a[y])&lt;=0)strcpy(t[k++],a[x++]);else strcpy(t[k++],a[y++]);}
+            while(x&lt;=m)strcpy(t[k++],a[x++]);
+            while(y&lt;=r)strcpy(t[k++],a[y++]);
+        }
+        for(i=0;i&lt;n;i++)strcpy(a[i],t[i]);
+    }
+    printf(&quot;Sorted strings: &quot;);for(i=0;i&lt;n;i++)printf(&quot;%s &quot;,a[i]);return 0;
+}</pre>
+<b>OUTPUT:-</b><br><pre>Enter number of strings: 5
+Enter strings: mango apple orange banana grape
+Sorte
